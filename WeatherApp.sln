@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4271CCEE-5729-4D3C-BEB8-1A03EB82F912}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{A2D00718-B58F-47C7-A2A0-35B675E81360}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{5F7CD3F5-5C9C-442F-9AD7-8C27A1612195}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{E90F019C-BCBF-4FE2-AEF2-62A5C00D003E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2D00718-B58F-47C7-A2A0-35B675E81360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D00718-B58F-47C7-A2A0-35B675E81360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D00718-B58F-47C7-A2A0-35B675E81360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D00718-B58F-47C7-A2A0-35B675E81360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F7CD3F5-5C9C-442F-9AD7-8C27A1612195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F7CD3F5-5C9C-442F-9AD7-8C27A1612195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F7CD3F5-5C9C-442F-9AD7-8C27A1612195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F7CD3F5-5C9C-442F-9AD7-8C27A1612195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E90F019C-BCBF-4FE2-AEF2-62A5C00D003E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E90F019C-BCBF-4FE2-AEF2-62A5C00D003E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E90F019C-BCBF-4FE2-AEF2-62A5C00D003E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E90F019C-BCBF-4FE2-AEF2-62A5C00D003E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
