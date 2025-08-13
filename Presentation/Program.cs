@@ -35,6 +35,9 @@ builder.Services.AddRateLimiter(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// In memory caching - We are using Sqlite but we can use in-memory caching for quick lookups
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
