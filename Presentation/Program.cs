@@ -1,4 +1,5 @@
 using System.Threading.RateLimiting;
+using DAL;
 using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,11 @@ builder.Services.AddRateLimiter(options =>
         rateLimitOptions.AutoReplenishment = true; 
     });
 });
+
+// Use the DAL-configured database path for consistency
+var databasePath = WeatherDbContext.BuildDatabasePath();
+var connectionString = $"Data Source={databasePath}";
+builder.Services.AddSqlite<WeatherDbContext>(connectionString);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -8,6 +8,11 @@ A simple weather app that uses the OpenWeatherMap API to fetch and display curre
 - Node JS (LTS)
 - OpenWeatherMap API key (sign up for free at https://openweathermap.org/api)
 
+1. Install `dotnet-ef`
+```bash
+dotnet tool install --global dotnet-ef
+```
+
 ## Setup
 
 1. Get a free API key from OpenWeatherMap.
@@ -44,6 +49,20 @@ A simple weather app that uses the OpenWeatherMap API to fetch and display curre
    ```bash
    npm run dev
    ```
+   
+## Docker
+
+1. Build the Docker image:
+   ```bash
+   docker build -t weather-app .
+   ```
+   
+2. Run the Docker container:
+   ```bash
+    docker run -p 3000:80 weather-app
+    ```
+   
+
    
 This will create a proxy to the backend API, allowing you to make requests without CORS issues.
 

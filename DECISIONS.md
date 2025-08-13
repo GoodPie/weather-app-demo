@@ -48,6 +48,11 @@
 - Create Dockerfile for Presentation layer (API and UI)
 - Stretch: Deploy to Azure
 
+# Locations
+
+- Would usually use Geocoding but that's a config to setup for demo
+- Just pulling key locations from an existing world city csv file
+
 # Additional Notes
 
 - Developing on MacOS so unable to verify on Visual Studio (which is what I would normally use for .NET)
