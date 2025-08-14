@@ -28,12 +28,12 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
 
     public async Task<ICollection<Location>> SearchLocationsAsync(string query, int limit = 50)
     {
-        var normalisedQuery = query.Trim().ToLower();
+        query = query.Trim().ToLower();
 
         return await context.Locations
             .Where(l =>
-                EF.Functions.Like(l.City, $"%{normalisedQuery}%") ||
-                EF.Functions.Like(l.Country, $"%{normalisedQuery}%"))
+                EF.Functions.Like(l.City, $"%{query}%") ||
+                EF.Functions.Like(l.Country, $"%{query}%"))
             .OrderBy(l => l.City)
             .ThenBy(l => l.Country)
             .Take(limit)

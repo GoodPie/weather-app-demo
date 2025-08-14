@@ -1,12 +1,11 @@
-namespace DAL.Dtos;
+namespace DAL.Dtos.Contracts;
 
 public interface IModelToDto<TModel, TDto>
     where TModel : class
     where TDto : class
 {
-    
     /// <summary>
-    /// Maps the model to a DTO.
+    ///     Maps the model to a DTO.
     /// </summary>
     /// <param name="model">The DTO to map.</param>
     /// <returns>The mapped model.</returns>

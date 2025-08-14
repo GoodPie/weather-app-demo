@@ -177,8 +177,8 @@ internal class Geometry
 
 internal class Location
 {
-    public double Lat { get; set; }
-    public double Lng { get; set; }
+    public double Lat { get; }
+    public double Lng { get; }
 }
 
 internal class AddressComponent

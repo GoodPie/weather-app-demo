@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using DAL.Dtos.Contracts;
 
 namespace DAL.Dtos.Location;
 
