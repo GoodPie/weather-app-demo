@@ -38,13 +38,28 @@
 
 # Database and Caching
 
-- SQL Server for database 
+- SQLite for database 
 - Entity Framework Core for ORM
-- Use in-memory caching for performance improvements
+- Use in-memory caching for performance improvements without having to perform a search on db
+
+## Why a database?
+
+- To store locations initially, without having to do a lot of lookups
+- To store user preferences or settings in the future
+
+## Why Caching?
+
+- I generally set this up for projects from the get-go, so it's a pattern I follow
+- Allows for quick access to frequently used data, without the round-trip to the DB and the complex queries
+
+### Caching Strategy
+
+- Write-through caching for locations
+  - We are going for simplicity
 
 # Docker
 
-- Use Docker for containerization
+- Use Docker for containerisation
 - Create Dockerfile for Presentation layer (API and UI)
 - Stretch: Deploy to Azure
 
@@ -57,4 +72,3 @@
 
 - Developing on MacOS so unable to verify on Visual Studio (which is what I would normally use for .NET)
 - Utilising Visual Studio Code for development
-
