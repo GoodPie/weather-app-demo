@@ -17,8 +17,8 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
         // Normalize the query to lower case for case-insensitive search
         return await context.Locations
             .Where(p =>
-                EF.Functions.Like(p.City.ToLower(), $"%{query}%") ||
-                EF.Functions.Like(p.Country.ToLower(), $"%{query}%") ||
+                EF.Functions.Like(p.City, $"%{query}%") ||
+                EF.Functions.Like(p.Country, $"%{query}%") ||
                 words.Contains(p.City))
             .OrderBy(p => p.City)
             .ThenBy(p => p.Country)
@@ -32,8 +32,8 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
 
         return await context.Locations
             .Where(l =>
-                EF.Functions.Like(l.City.ToLower(), $"%{normalisedQuery}%") ||
-                EF.Functions.Like(l.Country.ToLower(), $"%{normalisedQuery}%"))
+                EF.Functions.Like(l.City, $"%{normalisedQuery}%") ||
+                EF.Functions.Like(l.Country, $"%{normalisedQuery}%"))
             .OrderBy(l => l.City)
             .ThenBy(l => l.Country)
             .Take(limit)
