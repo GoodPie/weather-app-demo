@@ -15,7 +15,6 @@ namespace DAL.Migrations
                 name: "CreatedAt",
                 table: "Locations",
                 type: "TEXT",
-                rowVersion: true,
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
@@ -23,7 +22,6 @@ namespace DAL.Migrations
                 name: "UpdatedAt",
                 table: "Locations",
                 type: "TEXT",
-                rowVersion: true,
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
