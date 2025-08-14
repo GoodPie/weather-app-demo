@@ -11,6 +11,19 @@
 - No authentication for now - Just simple API. Would utilise JWT auth if time allowed
   - We can just implement some basic access control
 
+### Service Layer
+
+- Will create a generic response DTO
+  - Never been a fan of this pattern in .NET, but I've seen it in 90% of .NET projects and it should be easy to pick up for those only familiar with .NET
+  - It makes sense in the layered approach, but I prefer to rely on HTTP status codes or other communication protocol status
+
+
+### Data Access Layer
+
+- Don't implement AutoMapper for now
+  - Overhead in setting it up 
+  - We can use manual mapping for DTOs to entities and address this at a later date if it becomes annoying
+
 ## Front End
 
 - Vue.js for views (note: Haven't used before and this is exploratory. Any friction, switch to React)
