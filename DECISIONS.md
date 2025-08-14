@@ -11,6 +11,19 @@
 - No authentication for now - Just simple API. Would utilise JWT auth if time allowed
   - We can just implement some basic access control
 
+### Service Layer
+
+- Will create a generic response DTO
+  - Never been a fan of this pattern in .NET, but I've seen it in 90% of .NET projects and it should be easy to pick up for those only familiar with .NET
+  - It makes sense in the layered approach, but I prefer to rely on HTTP status codes or other communication protocol status
+
+
+### Data Access Layer
+
+- Don't implement AutoMapper for now
+  - Overhead in setting it up 
+  - We can use manual mapping for DTOs to entities and address this at a later date if it becomes annoying
+
 ## Front End
 
 - Vue.js for views (note: Haven't used before and this is exploratory. Any friction, switch to React)
@@ -38,13 +51,28 @@
 
 # Database and Caching
 
-- SQL Server for database 
+- SQLite for database 
 - Entity Framework Core for ORM
-- Use in-memory caching for performance improvements
+- Use in-memory caching for performance improvements without having to perform a search on db
+
+## Why a database?
+
+- To store locations initially, without having to do a lot of lookups
+- To store user preferences or settings in the future
+
+## Why Caching?
+
+- I generally set this up for projects from the get-go, so it's a pattern I follow
+- Allows for quick access to frequently used data, without the round-trip to the DB and the complex queries
+
+### Caching Strategy
+
+- Write-through caching for locations
+  - We are going for simplicity
 
 # Docker
 
-- Use Docker for containerization
+- Use Docker for containerisation
 - Create Dockerfile for Presentation layer (API and UI)
 - Stretch: Deploy to Azure
 
@@ -52,9 +80,10 @@
 
 - Would usually use Geocoding but that's a config to setup for demo
 - Just pulling key locations from an existing world city csv file
+- Change: Will have to use a different source for locations as the original source is not adequate enough
+
 
 # Additional Notes
 
 - Developing on MacOS so unable to verify on Visual Studio (which is what I would normally use for .NET)
 - Utilising Visual Studio Code for development
-

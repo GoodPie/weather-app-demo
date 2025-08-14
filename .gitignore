@@ -6,3 +6,7 @@ riderModule.iml
 
 # Rider specific files
 .idea/
+
+# DB locks (Sqlite)
+*.db-wal
+*.db-shm

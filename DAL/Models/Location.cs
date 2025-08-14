@@ -5,7 +5,7 @@ namespace DAL.Models;
 
 [Index(nameof(City))]
 [Index(nameof(Latitude), nameof(Longitude))]
-public class Location
+public class Location : TimeStampedEntity
 {
     // Unique identifier for the location
     public int Id { get; set; }
@@ -30,5 +30,7 @@ public class Location
     public required string Iso2 { get; set; }
     
     public required string Iso3 { get; set; }
+    
+    
     
 }

@@ -1,0 +1,35 @@
+using BLL.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Presentation.Controllers.v1;
+
+[ApiController]
+[Route("api/v1/[controller]")]
+public class LocationsController : ControllerBase
+{
+    private readonly ILocationService _locationService;
+    private readonly ILogger<LocationsController> _logger;
+
+    public LocationsController(ILogger<LocationsController> logger, ILocationService locationService)
+    {
+        _logger = logger;
+        _locationService = locationService;
+    }
+
+    [HttpGet(Name = "SearchByCity")]
+    [Route("search")]
+    public async Task<IActionResult> SearchByCity([FromQuery] string cityName)
+    {
+        _logger.LogInformation("Searching for locations by city name: {CityName}", cityName);
+        if (string.IsNullOrWhiteSpace(cityName))
+        {
+            _logger.LogWarning("City name is null or empty.");
+            return BadRequest("City name cannot be null or empty.");
+        }
+
+        var response = await _locationService.FindLocationByCityAsync(cityName);
+        if (!response.Success) return NotFound(response.Message);
+
+        return Ok(response.Data);
+    }
+}
