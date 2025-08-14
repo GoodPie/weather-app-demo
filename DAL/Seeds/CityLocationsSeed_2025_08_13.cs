@@ -6,20 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Seeds;
 
-internal abstract record WorldCityRecord(
-    string City,
-    string CityAscii,
-    double Lat,
-    double Lng,
-    string Country,
-    string Iso2,
-    string Iso3,
-    string AdminName,
-    string Capital,
-    string Population,
-    string Id
-);
-
 internal sealed class LocationMap : ClassMap<Location>
 {
     public LocationMap()
@@ -29,14 +15,13 @@ internal sealed class LocationMap : ClassMap<Location>
         Map(m => m.Latitude).Name("lat").TypeConverterOption.Format("0.#####");
         Map(m => m.Longitude).Name("lng").TypeConverterOption.Format("0.#####");
         Map(m => m.Iso2).Name("iso2");
-        Map(m => m.Iso3).Name("iso3");
     }
 }
 
 /// <summary>
-/// Seed class to populate the Locations table with city data from a CSV file.
-/// This is for demo purposes and is designed to be run once through .NET 9's seeder
-/// Ideally, use Google Geocoding API or similar for production data.
+///     Seed class to populate the Locations table with city data from a CSV file.
+///     This is for demo purposes and is designed to be run once through .NET 9's seeder
+///     Ideally, use Google Geocoding API or similar for production data.
 /// </summary>
 public class CityLocationsSeed : IDataSeed
 {
@@ -61,7 +46,7 @@ public class CityLocationsSeed : IDataSeed
             locations.Add(location);
 
             if (locations.Count < MaxBatchSize) continue;
-            
+
             // Log progress every 1000 records
             Console.WriteLine($"Adding {locations.Count} locations to the database...");
             await context.Locations.AddRangeAsync(locations, cancellationToken);

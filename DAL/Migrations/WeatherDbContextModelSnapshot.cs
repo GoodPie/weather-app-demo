@@ -38,11 +38,7 @@ namespace DAL.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Iso2")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Iso3")
-                        .IsRequired()
+                        .HasMaxLength(2)
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Latitude")
@@ -60,6 +56,8 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("City");
+
+                    b.HasIndex("Country");
 
                     b.HasIndex("Latitude", "Longitude");
 
