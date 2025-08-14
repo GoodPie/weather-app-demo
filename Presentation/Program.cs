@@ -51,6 +51,10 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 // Inject service layer
 builder.Services.AddScoped<ILocationService, LocationService>();
 
+// Add HttpClient and Geocoding service
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IGeocodingService, GoogleGeocodingService>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

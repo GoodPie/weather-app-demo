@@ -6,6 +6,8 @@ namespace DAL.Repository;
 
 public class LocationRepository(WeatherDbContext context) : ILocationRepository
 {
+    private const float LatitudeTolerance = 0.01f; // ~1km
+
     public async Task<ICollection<Location>> FindLocationByCityAsync(string cityName)
     {
         return await context.Locations
@@ -21,5 +23,44 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
     public Task<Location> FindLocationByIdAsync(int id)
     {
         throw new NotImplementedException();
+    }
+
+
+    public async Task<List<Location>> SaveGeocodingResultsAsync(
+        List<(string city, double lat, double lng, string? formattedAddress, string country, string? iso2)>
+            geocodingResults)
+    {
+        var savedLocations = new List<Location>();
+
+        foreach (var (city, lat, lng, _, country, iso2) in geocodingResults)
+        {
+            // Check if location already exists (within tolerance)
+            var existingLocation = await context.Locations
+                .FirstOrDefaultAsync(l =>
+                    Math.Abs(l.Latitude - lat) < LatitudeTolerance &&
+                    Math.Abs(l.Longitude - lng) < LatitudeTolerance);
+
+            if (existingLocation != null)
+            {
+                savedLocations.Add(existingLocation);
+                continue;
+            }
+
+            // Create new location
+            var newLocation = new Location
+            {
+                City = city,
+                Latitude = lat,
+                Longitude = lng,
+                Country = country,
+                Iso2 = iso2
+            };
+
+            context.Locations.Add(newLocation);
+            savedLocations.Add(newLocation);
+        }
+
+        await context.SaveChangesAsync();
+        return savedLocations;
     }
 }
