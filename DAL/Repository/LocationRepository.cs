@@ -15,6 +15,20 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
             .ToListAsync();
     }
 
+    public async Task<ICollection<Location>> SearchLocationsAsync(string query, int limit = 50)
+    {
+        var normalizedQuery = query.Trim().ToLower();
+        
+        return await context.Locations
+            .Where(l => 
+                EF.Functions.Like(l.City.ToLower(), $"%{normalizedQuery}%") ||
+                EF.Functions.Like(l.Country.ToLower(), $"%{normalizedQuery}%"))
+            .OrderBy(l => l.City)
+            .ThenBy(l => l.Country)
+            .Take(limit)
+            .ToListAsync();
+    }
+
     public Task<ICollection<Location>> FindLocationByGeolocationAsync(double latitude, double longitude)
     {
         throw new NotImplementedException();
