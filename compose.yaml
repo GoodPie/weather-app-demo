@@ -1,6 +1,9 @@
 ﻿services:
   presentation:
-    image: presentation
-    build:
-      context: .
-      dockerfile: Presentation/Dockerfile
+    image: weather-app
+    container_name: weather-app
+    ports:
+      - "8080:8080"
+    environment:
+      - API_KEY=your_api_key_here
+      - LOCATION=your_location_here

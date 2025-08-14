@@ -54,12 +54,12 @@ dotnet tool install --global dotnet-ef
 
 1. Build the Docker image:
    ```bash
-   docker build -t weather-app .
+   docker build . -t weather-app -f ./Presentation/Dockerfile 
    ```
    
 2. Run the Docker container:
    ```bash
-    docker run -p 3000:80 weather-app
+     docker run -p 8080:8080 weather-app -h weather-app
     ```
    
 
