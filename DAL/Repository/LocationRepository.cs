@@ -8,21 +8,32 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
 {
     private const float LatitudeTolerance = 0.01f; // ~1km
 
-    public async Task<ICollection<Location>> FindLocationByCityAsync(string cityName)
+    public async Task<ICollection<Location>> FindLocationByQuery(string query)
     {
+        // Break the query into words and search for each word in the city name, splitting by space and comma
+        query = query.Trim().ToLower();
+        var words = query.Split([" ", ","], StringSplitOptions.RemoveEmptyEntries);
+
+        // Normalize the query to lower case for case-insensitive search
         return await context.Locations
-            .Where(p => EF.Functions.Like(p.City.ToLower(), $"%{cityName.ToLower()}%"))
+            .Where(p =>
+                EF.Functions.Like(p.City.ToLower(), $"%{query}%") ||
+                EF.Functions.Like(p.Country.ToLower(), $"%{query}%") ||
+                words.Contains(p.City))
+            .OrderBy(p => p.City)
+            .ThenBy(p => p.Country)
+            .Take(10) // Limit to 10 results
             .ToListAsync();
     }
 
     public async Task<ICollection<Location>> SearchLocationsAsync(string query, int limit = 50)
     {
-        var normalizedQuery = query.Trim().ToLower();
-        
+        var normalisedQuery = query.Trim().ToLower();
+
         return await context.Locations
-            .Where(l => 
-                EF.Functions.Like(l.City.ToLower(), $"%{normalizedQuery}%") ||
-                EF.Functions.Like(l.Country.ToLower(), $"%{normalizedQuery}%"))
+            .Where(l =>
+                EF.Functions.Like(l.City.ToLower(), $"%{normalisedQuery}%") ||
+                EF.Functions.Like(l.Country.ToLower(), $"%{normalisedQuery}%"))
             .OrderBy(l => l.City)
             .ThenBy(l => l.Country)
             .Take(limit)

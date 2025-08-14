@@ -15,7 +15,7 @@ public class LocationService(ILocationRepository locationRepository, IGeocodingS
         // Geocoding service call to find coordinates by city name only if it hasn't been geocoded before
         await geocodingService.SearchLocationsAsync(cityName);
 
-        var locations = await locationRepository.FindLocationByCityAsync(cityName);
+        var locations = await locationRepository.FindLocationByQuery(cityName);
         var mappedLocations = locations.Select(SearchLocationResponseDto.MapToDto).ToList();
 
         // Successfully found locations
