@@ -7,12 +7,7 @@ GET {{API_HostAddress}}/openapi/v1.json
 
 ###
 
-GET {{API_HostAddress}}/api/v1/weatherforecast/
-Accept: application/json
-
-###
-
-GET {{API_HostAddress}}/api/v1/locations/search?cityName=Morley
+GET {{API_HostAddress}}/api/v1/locations/search?cityName=Mandurah
 Accept: application/json
 
 ###

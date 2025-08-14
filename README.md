@@ -18,6 +18,19 @@ dotnet tool install --global dotnet-ef
 1. Get a free API key from OpenWeatherMap.
 2. Clone the repository
 
+## API Key Configuration
+
+1. Create a Google API Key with the following services enabled:
+    - Geocoding API
+    - Places API
+
+2. Setup dotnet user secrets to store your API key:
+   ```bash
+   cd Presentation
+   dotnet user-secrets init
+   dotnet user-secrets set "GoogleMaps:ApiKey" "YOUR_GOOGLE_API_KEY"
+   ```
+
 ## API
 
 1. Generate the `https` certificate

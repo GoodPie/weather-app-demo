@@ -47,9 +47,14 @@ builder.Services.AddDbContext<WeatherDbContext>(options =>
 
 // Inject repository layer
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<IGeoCodeSearchRepository, GeoCodeSearchRepository>();
 
 // Inject service layer
 builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IGeocodingService, GoogleGeocodingService>();
+
+// Add HttpClient and Geocoding service
+builder.Services.AddHttpClient();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

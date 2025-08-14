@@ -81,7 +81,8 @@
 - Would usually use Geocoding but that's a config to setup for demo
 - Just pulling key locations from an existing world city csv file
 - Change: Will have to use a different source for locations as the original source is not adequate enough
-
+- Exploring Google APIs for reverse geocoding and location data.
+  - Bonus is it has Weather Data 
 
 # Additional Notes
 

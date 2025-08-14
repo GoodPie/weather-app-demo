@@ -17,6 +17,36 @@ namespace DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
 
+            modelBuilder.Entity("DAL.Models.GeocodeSearch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ResultCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SearchTerm")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SearchedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SearchTerm");
+
+                    b.ToTable("GeocodeSearches");
+                });
+
             modelBuilder.Entity("DAL.Models.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -34,15 +64,10 @@ namespace DAL.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Iso2")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Iso3")
-                        .IsRequired()
+                        .HasMaxLength(2)
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Latitude")
@@ -54,12 +79,13 @@ namespace DAL.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("City");
+
+                    b.HasIndex("Country");
 
                     b.HasIndex("Latitude", "Longitude");
 
