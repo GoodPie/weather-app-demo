@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Web;
 using BLL.Services.Contracts;
+using DAL.Dtos.Google;
+using DAL.Models;
 using DAL.Repository.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -32,7 +34,7 @@ public class GoogleGeocodingService : IGeocodingService
                   throw new InvalidOperationException("Google Maps API key not found in configuration");
     }
 
-    public async Task<List<DAL.Models.Location>> SearchLocationsAsync(string query, CancellationToken ct = default)
+    public async Task<List<Location>> SearchLocationsAsync(string query, CancellationToken ct = default)
     {
         ValidateQuery(query);
 
@@ -47,7 +49,6 @@ public class GoogleGeocodingService : IGeocodingService
         _logger.LogInformation("Found {Count} locations for query: {Query}", locations.Count, query);
         return locations.ToList();
     }
-
 
     private static void ValidateQuery(string query)
     {
@@ -82,7 +83,7 @@ public class GoogleGeocodingService : IGeocodingService
         return await response.Content.ReadAsStringAsync(ct);
     }
 
-    private static GeocodingResponse ParseGeocodingResponse(string json)
+    private static GoogleGeocodingDto ParseGeocodingResponse(string json)
     {
         var options = new JsonSerializerOptions
         {
@@ -90,11 +91,12 @@ public class GoogleGeocodingService : IGeocodingService
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         };
 
-        var result = JsonSerializer.Deserialize<GeocodingResponse>(json, options);
+        var result = JsonSerializer.Deserialize<GoogleGeocodingDto>(json, options);
         return result ?? throw new InvalidOperationException("Failed to parse geocoding response");
     }
 
-    private async Task SaveApiResultsToDatabase(GeocodingResponse response, string query)
+
+    private async Task SaveApiResultsToDatabase(GoogleGeocodingDto response, string query)
     {
         if (response.Results.Count == 0) return;
 
@@ -121,7 +123,7 @@ public class GoogleGeocodingService : IGeocodingService
         }
     }
 
-    private static (string country, string? iso2) ExtractCountryInfo(GeocodingResult result)
+    private static (string country, string? iso2) ExtractCountryInfo(GoogleGeocodingResultDto result)
     {
         var countryComponent = result.AddressComponents
             .FirstOrDefault(ac => ac.Types.Contains("country"));
@@ -133,7 +135,14 @@ public class GoogleGeocodingService : IGeocodingService
         return (countryComponent.LongName, iso2);
     }
 
-    private static string ExtractCityName(GeocodingResult result, string fallbackCityName)
+    /// <summary>
+    ///     Extracts the city name from the geocoding result.
+    ///     It first checks for the most specific locality, then falls back to administrative area level
+    /// </summary>
+    /// <param name="result"></param>
+    /// <param name="fallbackCityName"></param>
+    /// <returns></returns>
+    private static string ExtractCityName(GoogleGeocodingResultDto result, string fallbackCityName)
     {
         // Look for locality component first (most specific)
         var localityComponent = result.AddressComponents
@@ -152,38 +161,4 @@ public class GoogleGeocodingService : IGeocodingService
         // If no locality found, fallback to the original search term
         return fallbackCityName;
     }
-}
-
-// Internal response models - only used by this service
-// These are mapped to the JSON structure returned by Google Geocoding API
-// We will look at best practice later, but for now, this is sufficient
-internal class GeocodingResponse
-{
-    public string Status { get; set; } = "";
-    public List<GeocodingResult> Results { get; set; } = new();
-}
-
-internal class GeocodingResult
-{
-    public Geometry Geometry { get; set; } = new();
-    public string FormattedAddress { get; set; } = "";
-    public List<AddressComponent> AddressComponents { get; set; } = new();
-}
-
-internal class Geometry
-{
-    public Location Location { get; set; } = new();
-}
-
-internal class Location
-{
-    public double Lat { get; set; }
-    public double Lng { get; set; }
-}
-
-internal class AddressComponent
-{
-    public string LongName { get; set; } = "";
-    public string ShortName { get; set; } = "";
-    public List<string> Types { get; set; } = new();
 }
