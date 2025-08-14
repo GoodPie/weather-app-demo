@@ -6,8 +6,6 @@ namespace DAL.Repository;
 
 public class LocationRepository(WeatherDbContext context) : ILocationRepository
 {
-    private const float LatitudeTolerance = 0.01f; // ~1km
-
     public async Task<ICollection<Location>> FindLocationByQuery(string query)
     {
         // Break the query into words and search for each word in the city name, splitting by space and comma
