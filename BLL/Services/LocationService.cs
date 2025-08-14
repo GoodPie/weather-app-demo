@@ -14,7 +14,15 @@ public class LocationService(ILocationRepository locationRepository) : ILocation
         var locations = await locationRepository.FindLocationByCityAsync(cityName);
         var mappedLocations = locations.Select(SearchLocationResponseDto.MapToDto).ToList();
 
-        // Build response object
+        if (mappedLocations.Count == 0)
+        {
+            response.Data = null;
+            response.Success = false;
+            response.Message = $"Failed to find locations by city name: {cityName}";
+            return response;
+        }
+
+        // Successfully found locations
         response.Data = mappedLocations;
         response.Success = true;
         response.Message = "Locations found successfully.";

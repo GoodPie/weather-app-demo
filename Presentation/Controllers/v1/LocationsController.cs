@@ -20,6 +20,7 @@ public class LocationsController : ControllerBase
     [Route("search")]
     public async Task<IActionResult> SearchByCity([FromQuery] string cityName)
     {
+        _logger.LogInformation("Searching for locations by city name: {CityName}", cityName ?? "null");
         if (string.IsNullOrWhiteSpace(cityName)) return BadRequest("City name cannot be null or empty.");
 
         var response = await _locationService.FindLocationByCityAsync(cityName);
