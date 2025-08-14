@@ -80,6 +80,8 @@
 
 - Would usually use Geocoding but that's a config to setup for demo
 - Just pulling key locations from an existing world city csv file
+- Change: Will have to use a different source for locations as the original source is not adequate enough
+
 
 # Additional Notes
 

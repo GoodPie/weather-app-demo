@@ -7,25 +7,27 @@ namespace BLL.Services;
 
 public class LocationService(ILocationRepository locationRepository) : ILocationService
 {
-
-    public async Task<ServiceResponse<ICollection<SearchLocationResponseDto>>> FindLocationByCityAsync(string cityName)
+    public async Task<ServiceResponse<List<SearchLocationResponseDto>>> FindLocationByCityAsync(string cityName)
     {
-        // Find the location from the DB
+        ServiceResponse<List<SearchLocationResponseDto>> response = new();
+
         var locations = locationRepository.FindLocationByCityAsync(cityName);
-        
-        // Map the locations to the response DTO
         var mappedLocations = locations.Result.Select(SearchLocationResponseDto.MapToDto).ToList();
-        
-        // Return the response
-        return new ServiceResponse<ICollection<SearchLocationResponseDto>>(mappedLocations);
+
+        // Build response object
+        response.Data = mappedLocations;
+        response.Success = true;
+        response.Message = "Locations found successfully.";
+        return response;
     }
 
-    public Task<ServiceResponse<ICollection<SearchLocationResponseDto>>> FindLocationByGeolocationAsync(double latitude, double longitude)
+    public Task<ServiceResponse<SearchLocationResponseDto>> FindLocationByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ServiceResponse<SearchLocationResponseDto>> FindLocationByIdAsync(int id)
+    public Task<ServiceResponse<List<SearchLocationResponseDto>>> FindLocationByGeolocationAsync(double latitude,
+        double longitude)
     {
         throw new NotImplementedException();
     }
