@@ -144,15 +144,15 @@ public class GoogleGeocodingService : IGeocodingService
         if (response.Results.Count == 0) return;
 
         var geocodingResults = response.Results
-            .Select(r =>
+            .Select(googleResponse =>
             {
-                var countryInfo = ExtractCountryInfo(r);
-                var cityName = ExtractCityName(r, query);
+                var countryInfo = ExtractCountryInfo(googleResponse);
+                var cityName = ExtractCityName(googleResponse, query);
                 return (
                     city: cityName,
-                    lat: r.Geometry.Location.Lat,
-                    lng: r.Geometry.Location.Lng,
-                    formattedAddress: (string?)r.FormattedAddress,
+                    lat: googleResponse.Geometry.Location.Lat,
+                    lng: googleResponse.Geometry.Location.Lng,
+                    formattedAddress: googleResponse.FormattedAddress,
                     countryInfo.country,
                     countryInfo.iso2
                 );

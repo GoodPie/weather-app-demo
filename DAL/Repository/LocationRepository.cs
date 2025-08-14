@@ -50,7 +50,7 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
 
 
     public async Task<List<Location>> SaveGeocodingResultsAsync(
-        List<(string city, double lat, double lng, string? formattedAddress, string country, string? iso2)>
+        List<(string city, double lat, double lng, string formattedAddress, string country, string? iso2)>
             geocodingResults)
     {
         var savedLocations = new List<Location>();

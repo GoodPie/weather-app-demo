@@ -42,6 +42,6 @@ public interface ILocationRepository
     /// <param name="geocodingResults"></param>
     /// <returns>List of saved locations</returns>
     Task<List<Location>> SaveGeocodingResultsAsync(
-        List<(string city, double lat, double lng, string? formattedAddress, string country, string? iso2)>
+        List<(string city, double lat, double lng, string formattedAddress, string country, string? iso2)>
             geocodingResults);
 }
