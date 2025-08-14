@@ -12,7 +12,7 @@ Accept: application/json
 
 ###
 
-GET {{API_HostAddress}}/api/v1/location?cityName=Morley
+GET {{API_HostAddress}}/api/v1/locations/search?cityName=Morley
 Accept: application/json
 
 ###

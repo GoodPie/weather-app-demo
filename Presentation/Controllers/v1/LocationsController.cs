@@ -5,12 +5,12 @@ namespace Presentation.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class LocationController : ControllerBase
+public class LocationsController : ControllerBase
 {
     private readonly ILocationService _locationService;
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public LocationController(ILogger<WeatherForecastController> logger, ILocationService locationService)
+    public LocationsController(ILogger<WeatherForecastController> logger, ILocationService locationService)
     {
         _logger = logger;
         _locationService = locationService;
