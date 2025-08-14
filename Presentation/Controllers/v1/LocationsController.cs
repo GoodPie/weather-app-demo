@@ -8,9 +8,9 @@ namespace Presentation.Controllers.v1;
 public class LocationsController : ControllerBase
 {
     private readonly ILocationService _locationService;
-    private readonly ILogger<WeatherForecastController> _logger;
+    private readonly ILogger<LocationsController> _logger;
 
-    public LocationsController(ILogger<WeatherForecastController> logger, ILocationService locationService)
+    public LocationsController(ILogger<LocationsController> logger, ILocationService locationService)
     {
         _logger = logger;
         _locationService = locationService;
