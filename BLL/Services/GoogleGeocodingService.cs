@@ -50,16 +50,26 @@ public class GoogleGeocodingService : IGeocodingService
         return locations.ToList();
     }
 
+    /// <summary>
+    ///     Validates the query string to ensure it is not null or empty.
+    /// </summary>
+    /// <param name="query">Query</param>
+    /// <exception cref="ArgumentException"></exception>
     private static void ValidateQuery(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
             throw new ArgumentException("Search query cannot be empty", nameof(query));
     }
 
-    private async Task GeocodeAndStoreAsync(string query, CancellationToken ct)
+    /// <summary>
+    ///     Attempts to geocode the provided query using the Google Maps API.
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancelToken"></param>
+    private async Task GeocodeAndStoreAsync(string query, CancellationToken cancelToken)
     {
         var url = BuildGeocodingUrl(query);
-        var json = await FetchGeocodingData(url, ct);
+        var json = await FetchGeocodingData(url, cancelToken);
         var response = ParseGeocodingResponse(json);
 
         if (response.Results.Count > 0)
@@ -67,22 +77,50 @@ public class GoogleGeocodingService : IGeocodingService
             await SaveApiResultsToDatabase(response, query);
 
         // Record that we've searched this query (even if no results)
-        await _geoCodeSearchRepository.AddSearchAsync(query, response.Results.Count, ct);
+        await _geoCodeSearchRepository.AddSearchAsync(query, response.Results.Count, cancelToken);
     }
 
+    /// <summary>
+    ///     Builds the URL for the Google Geocoding API request.
+    ///     Encodes the query to ensure it is safe for use in a URL.
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     private string BuildGeocodingUrl(string query)
     {
         var encodedQuery = HttpUtility.UrlEncode(query);
         return $"{BaseUrl}?address={encodedQuery}&key={_apiKey}";
     }
 
-    private async Task<string> FetchGeocodingData(string url, CancellationToken ct)
+    /// <summary>
+    ///     Attempts to fetch geocoding data from the Google Maps API.
+    ///     Logs an error if the request fails and throws an InvalidOperationException.
+    /// </summary>
+    /// <param name="url">URL for Google API</param>
+    /// <param name="cancelToken">Token to cancel the request</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    private async Task<string> FetchGeocodingData(string url, CancellationToken cancelToken)
     {
-        var response = await _httpClient.GetAsync(url, ct);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(ct);
+        try
+        {
+            var response = await _httpClient.GetAsync(url, cancelToken);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(cancelToken);
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Error fetching geocoding data from URL: {Url}", url);
+            throw new InvalidOperationException("Failed to fetch geocoding data", ex);
+        }
     }
 
+    /// <summary>
+    ///     Parse the JSON response from the Google Geocoding API into a DTO.
+    /// </summary>
+    /// <param name="json">JSON response from the Google APi</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
     private static GoogleGeocodingDto ParseGeocodingResponse(string json)
     {
         var options = new JsonSerializerOptions
@@ -96,6 +134,11 @@ public class GoogleGeocodingService : IGeocodingService
     }
 
 
+    /// <summary>
+    ///     Saves the geocoding results to the database
+    /// </summary>
+    /// <param name="response">Parsed response</param>
+    /// <param name="query">Query string</param>
     private async Task SaveApiResultsToDatabase(GoogleGeocodingDto response, string query)
     {
         if (response.Results.Count == 0) return;
@@ -123,6 +166,11 @@ public class GoogleGeocodingService : IGeocodingService
         }
     }
 
+    /// <summary>
+    ///     Extract country information from the geocoding result.
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
     private static (string country, string? iso2) ExtractCountryInfo(GoogleGeocodingResultDto result)
     {
         var countryComponent = result.AddressComponents
