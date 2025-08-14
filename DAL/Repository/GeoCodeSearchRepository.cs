@@ -13,7 +13,7 @@ public class GeoCodeSearchRepository(WeatherDbContext context) : IGeoCodeSearchR
             .AnyAsync(gs => gs.SearchTerm.ToLower() == normalizedQuery, cancelToken);
     }
 
-    public async Task AddSearchAsync(string query, int resultCount, CancellationToken cancelToken = default)
+    public async Task AddSearchAsync(string query, int resultCount, CancellationToken cancelToken)
     {
         var normalizedCity = query.Trim().ToLowerInvariant();
 
