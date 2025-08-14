@@ -7,9 +7,17 @@ public interface ILocationRepository
     /// <summary>
     ///     Finds the location by its city name
     /// </summary>
-    /// <param name="cityName"></param>
+    /// <param name="query"></param>
     /// <returns>Models.Location</returns>
-    Task<ICollection<Location>> FindLocationByCityAsync(string cityName);
+    Task<ICollection<Location>> FindLocationByQuery(string query);
+
+    /// <summary>
+    ///     Searches locations by query string across city, country, and formatted address
+    /// </summary>
+    /// <param name="query">Search query that can match city name, country, or parts of address</param>
+    /// <param name="limit">Maximum number of results to return</param>
+    /// <returns>Collection of matching locations</returns>
+    Task<ICollection<Location>> SearchLocationsAsync(string query, int limit = 10);
 
     /// <summary>
     ///     Find Location by its geolocation (latitude and longitude)
