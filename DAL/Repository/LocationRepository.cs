@@ -24,7 +24,7 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
             .ToListAsync();
     }
 
-    public async Task<ICollection<Location>> SearchLocationsAsync(string query, int limit = 50)
+    public async Task<ICollection<Location>> SearchLocationsAsync(string query, int limit = 10)
     {
         query = query.Trim().ToLower();
 
