@@ -59,18 +59,6 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
 
         foreach (var (city, lat, lng, _, country, iso2) in geocodingResults)
         {
-            // Check if location already exists (within tolerance)
-            var existingLocation = await context.Locations
-                .FirstOrDefaultAsync(l =>
-                    Math.Abs(l.Latitude - lat) < LatitudeTolerance &&
-                    Math.Abs(l.Longitude - lng) < LatitudeTolerance);
-
-            if (existingLocation != null)
-            {
-                savedLocations.Add(existingLocation);
-                continue;
-            }
-
             // Create new location
             var newLocation = new Location
             {
