@@ -11,8 +11,8 @@ public class LocationService(ILocationRepository locationRepository) : ILocation
     {
         ServiceResponse<List<SearchLocationResponseDto>> response = new();
 
-        var locations = locationRepository.FindLocationByCityAsync(cityName);
-        var mappedLocations = locations.Result.Select(SearchLocationResponseDto.MapToDto).ToList();
+        var locations = await locationRepository.FindLocationByCityAsync(cityName);
+        var mappedLocations = locations.Select(SearchLocationResponseDto.MapToDto).ToList();
 
         // Build response object
         response.Data = mappedLocations;
