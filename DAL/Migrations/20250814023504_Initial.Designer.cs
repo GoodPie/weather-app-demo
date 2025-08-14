@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(WeatherDbContext))]
-    [Migration("20250813155031_RemoveUniqueLatLongCity")]
-    partial class RemoveUniqueLatLongCity
+    [Migration("20250814023504_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,11 +53,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("City")
-                        .IsUnique();
+                    b.HasIndex("City");
 
-                    b.HasIndex("Latitude", "Longitude")
-                        .IsUnique();
+                    b.HasIndex("Latitude", "Longitude");
 
                     b.ToTable("Locations");
                 });

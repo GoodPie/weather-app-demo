@@ -5,7 +5,7 @@
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,10 +29,14 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Locations_City_Latitude_Longitude",
+                name: "IX_Locations_City",
                 table: "Locations",
-                columns: new[] { "City", "Latitude", "Longitude" },
-                unique: true);
+                column: "City");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_Latitude_Longitude",
+                table: "Locations",
+                columns: new[] { "Latitude", "Longitude" });
         }
 
         /// <inheritdoc />
