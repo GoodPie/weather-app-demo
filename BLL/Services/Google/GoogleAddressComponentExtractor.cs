@@ -8,11 +8,13 @@ public class GoogleAddressComponentExtractor(GoogleGeocodingResultDto result)
     private const string CountryType = "country";
     private const string LocalityType = "locality";
     private const string AdminLevel1Type = "administrative_area_level_1";
+    private const string AdminLevel2Type = "administrative_area_level_2";
 
     public GeocodingLocationDto ExtractLocationData()
     {
-        var cityName = ExtractCityName();
-        if (string.IsNullOrEmpty(cityName)) throw new InvalidOperationException("City name cannot be empty");
+        var country = ExtractCountry();
+        if (string.IsNullOrEmpty(country))
+            throw new InvalidOperationException("Country information is missing in the geocoding result.");
 
         return new GeocodingLocationDto
         {
@@ -20,7 +22,7 @@ public class GoogleAddressComponentExtractor(GoogleGeocodingResultDto result)
             Latitude = ExtractLatitude(),
             Longitude = ExtractLongitude(),
             ProvinceName = ExtractProvinceName(),
-            Country = ExtractCountry(),
+            Country = country,
             Code = ExtractIso2()
         };
     }
@@ -40,7 +42,12 @@ public class GoogleAddressComponentExtractor(GoogleGeocodingResultDto result)
     private string ExtractCityName()
     {
         var localityComponent = FindAddressComponent(LocalityType);
-        return localityComponent?.LongName ?? string.Empty;
+
+        // If locality is not found, try to use administrative_area_level_1 as a fallback
+        if (localityComponent != null) return localityComponent.LongName ?? string.Empty;
+
+        var adminLevel1Component = FindAddressComponent(AdminLevel1Type);
+        return adminLevel1Component != null ? adminLevel1Component.LongName : string.Empty;
     }
 
     private string ExtractProvinceName()
