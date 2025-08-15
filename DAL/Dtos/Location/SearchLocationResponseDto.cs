@@ -10,10 +10,13 @@ namespace DAL.Dtos.Location;
 public class SearchLocationResponseDto : IModelToDto<Models.Location, SearchLocationResponseDto>
 {
     public int Id { get; set; }
-    public string CityName { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+
+    public string Label { get; set; }
+    public string Code { get; set; } = string.Empty;
 
     public static SearchLocationResponseDto MapToDto(Models.Location model)
     {
@@ -24,10 +27,12 @@ public class SearchLocationResponseDto : IModelToDto<Models.Location, SearchLoca
         return new SearchLocationResponseDto
         {
             Id = model.Id,
-            CityName = model.City,
+            Name = model.City,
             Country = model.Country,
             Latitude = model.Latitude,
-            Longitude = model.Longitude
+            Longitude = model.Longitude,
+            Label = $"{model.City}, {model.Country}",
+            Code = model.Iso2 ?? string.Empty
         };
     }
 }
