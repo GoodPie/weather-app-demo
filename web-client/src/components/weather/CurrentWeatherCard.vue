@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import type { CurrentWeather, UnitSystem } from '@/types/weather'
+import TemperatureDisplay from './TemperatureDisplay.vue'
+import WeatherMetricsGrid from './WeatherMetricsGrid.vue'
+import SunTimesDisplay from './SunTimesDisplay.vue'
 
 interface Props {
   data: CurrentWeather | null
@@ -9,55 +11,41 @@ interface Props {
   loading?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   title: 'Current Weather',
-  loading: false
-})
-
-const tempDisplay = computed(() => {
-  if (!props.data) return '-'
-  return props.unitSystem === 'metric'
-    ? `${Math.round(props.data.tempC)}°C`
-    : `${Math.round(props.data.tempF)}°F`
-})
-
-const feelsLikeDisplay = computed(() => {
-  if (!props.data) return null
-  const v = props.unitSystem === 'metric' ? props.data.feelsLikeC : props.data.feelsLikeF
-  return typeof v === 'number' ? `${Math.round(v)}°` : null
-})
-
-const windDisplay = computed(() => {
-  if (!props.data) return null
-  const speed = props.unitSystem === 'metric' ? props.data.windKph : props.data.windMph
-  const unit = props.unitSystem === 'metric' ? 'km/h' : 'mph'
-  if (typeof speed !== 'number') return null
-  return `${Math.round(speed)} ${unit}`
+  loading: false,
 })
 </script>
 
 <template>
-  <div class="rounded-2xl p-4 shadow-md border bg-surface-500 border-b-surface-300">
-    <h2 class="text-xl font-semibold mb-2">{{ title }}</h2>
+  <div
+    class="w-full rounded-3xl mt-4 p-6 shadow-xl border bg-app-surface/90 border-app-surface/50 backdrop-blur-md transition-all duration-300 hover:shadow-2xl hover:bg-app-surface/95"
+  >
+    <h2 class="font-groovy text-2xl font-bold mb-6 text-center text-app-text">{{ title }}</h2>
 
-    <div v-if="loading" class="text-app-text/70" data-testid="cw-loading">Loading...</div>
-    <div v-else-if="!data" class="text-app-text/70" data-testid="cw-empty">No data</div>
-    <div v-else class="grid grid-cols-2 gap-3" data-testid="cw-content">
-      <div class="col-span-2 flex items-baseline gap-3">
-        <span class="text-4xl font-bold">{{ tempDisplay }}</span>
-        <span class="text-app-text/80">{{ data.conditionText ?? '' }}</span>
+    <div v-if="loading" class="text-center py-8">
+      <div class="animate-pulse text-lg text-app-text/80" data-testid="cw-loading">
+        <i class="pi pi-spin pi-spinner mr-2 text-sunset-400"></i>
+        Loading weather...
       </div>
-      <div v-if="feelsLikeDisplay" class="text-app-text/90">
-        Feels like: <span class="font-medium">{{ feelsLikeDisplay }}</span>
+    </div>
+
+    <div v-else-if="!data" class="text-center py-8 text-app-text/80" data-testid="cw-empty">
+      <div class="text-4xl mb-2">
+        <i class="pi pi-cloud text-app-text/60"></i>
       </div>
-      <div v-if="windDisplay" class="text-app-text/90">
-        Wind: <span class="font-medium">{{ windDisplay }}</span>
-        <span v-if="data.windDir" class="ml-1">({{ data.windDir }})</span>
-      </div>
-      <div v-if="typeof data.humidity === 'number'">Humidity: <span class="font-medium">{{ Math.round(data.humidity!) }}%</span></div>
-      <div v-if="typeof data.uvIndex === 'number'">UV Index: <span class="font-medium">{{ data.uvIndex }}</span></div>
-      <div v-if="data.sunrise">Sunrise: <span class="font-medium">{{ data.sunrise }}</span></div>
-      <div v-if="data.sunset">Sunset: <span class="font-medium">{{ data.sunset }}</span></div>
+      <div>No weather data available</div>
+    </div>
+
+    <div v-else class="space-y-6" data-testid="cw-content">
+      <!-- Primary: Temperature & Condition -->
+      <TemperatureDisplay :data="data" :unit-system="unitSystem" />
+
+      <!-- Secondary: Key Metrics Grid -->
+      <WeatherMetricsGrid :data="data" :unit-system="unitSystem" />
+
+      <!-- Tertiary: Sun Times -->
+      <SunTimesDisplay :data="data" />
     </div>
   </div>
 </template>

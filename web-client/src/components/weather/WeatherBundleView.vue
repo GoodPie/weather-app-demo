@@ -11,14 +11,16 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
   title: 'Weather',
-  loading: false
+  loading: false,
 })
 </script>
 
 <template>
-  <section class="space-y-4">
-    <h2 class="text-2xl font-semibold" v-if="title">{{ title }}</h2>
-
-    <CurrentWeatherCard :data="response?.weather?.current ?? null" :unit-system="unitSystem" :loading="loading" />
+  <section class="flex justify-center w-full">
+    <CurrentWeatherCard
+      :data="response?.weather?.current ?? null"
+      :unit-system="unitSystem"
+      :loading="loading"
+    />
   </section>
 </template>

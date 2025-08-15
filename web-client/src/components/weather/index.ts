@@ -1,4 +1,7 @@
 export { default as CurrentWeatherCard } from './CurrentWeatherCard.vue'
-export { default as HourlyForecastList } from './HourlyForecastList.vue'
+export { default as TemperatureDisplay } from './TemperatureDisplay.vue'
+export { default as WeatherMetricsGrid } from './WeatherMetricsGrid.vue'
+export { default as SunTimesDisplay } from './SunTimesDisplay.vue'
 export { default as DailyForecastList } from './DailyForecastList.vue'
+export { default as HourlyForecastList } from './HourlyForecastList.vue'
 export { default as WeatherBundleView } from './WeatherBundleView.vue'

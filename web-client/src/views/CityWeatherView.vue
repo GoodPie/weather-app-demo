@@ -43,11 +43,13 @@ const isMetric = computed({
 </script>
 
 <template>
-  <div class="min-h-screen transition-colors duration-300 p-6">
-    <div class="container mx-auto space-y-4">
+  <div class="min-h-screen  transition-colors duration-300 p-6">
+    <div class="container mx-auto space-y-4 w-full max-w-xl ">
       <div class="flex items-center justify-between gap-4">
         <div>
-          <h1 class="text-3xl md:text-4xl font-bold">{{ response?.location?.label ?? ('#' + id) }}</h1>
+          <h1 class="font-groovy text-3xl md:text-4xl  font-bold leading-tight">
+            {{ response?.location?.label ?? (loading ? 'Loading weather...' : '#' + id) }}
+          </h1>
         </div>
         <div class="flex items-center gap-2">
           <span :class="!isMetric ? 'font-bold text-primary' : 'text-gray-400'">°C</span>
@@ -61,7 +63,7 @@ const isMetric = computed({
         <button class="ml-3 underline" @click="load">Retry</button>
       </div>
 
-      <WeatherBundleView :response="response" :unit-system="unitSystem" :loading="loading" />
+      <WeatherBundleView :response="response" :unit-system="unitSystem" :loading="loading" title="Current Weather" />
     </div>
   </div>
 </template>

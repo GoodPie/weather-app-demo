@@ -20,7 +20,7 @@ function goToCity(cityId: number) {
 <template>
   <div v-if="lastThree.length" class="recent-searches">
     <h3 class="font-semibold mb-2">Recent Searches</h3>
-    <ul class="flex gap-2 flex-wrap">
+    <ul class="flex gap-2 flex-wrap items-center justify-center">
       <li v-for="city in lastThree" :key="city.id">
         <button
           class="focus:outline-none"
