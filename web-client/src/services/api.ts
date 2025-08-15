@@ -7,7 +7,6 @@ const LOCATIONS_API_URL = `${API_BASE_URL}locations`;
 export async function searchCitiesAPI(query: string) {
 
   const url = new URL(`${LOCATIONS_API_URL}/search`);
-  console.log(url)
   url.searchParams.append('cityName', query);
 
   try {
