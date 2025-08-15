@@ -16,6 +16,7 @@ public class WeatherDbContext : DbContext
 
     public DbSet<Location> Locations { get; set; }
     public DbSet<GeocodeSearch> GeocodeSearches { get; set; }
+    public DbSet<WeatherData> WeatherData { get; set; }
 
     // Configure EF to create a Sqlite database at the specified path, locally
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -4,6 +4,9 @@ export type City = {
   id: number
   name: string
   label: string
+  lat?: number
+  lon?: number
+  country?: string
 }
 
 export type SearchFunction = (query: string) => Promise<City[]>

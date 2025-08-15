@@ -12,3 +12,54 @@ Accept: application/json
 
 ###
 
+# Weather API Endpoints
+
+### Get Current Weather by Coordinates
+GET {{API_HostAddress}}/api/v1/weather/current?latitude=-32.5269&longitude=115.7221&units=metric
+Accept: application/json
+
+###
+
+### Get Current Weather by Location ID
+GET {{API_HostAddress}}/api/v1/weather/current/1
+Accept: application/json
+
+###
+
+### Get Hourly Forecast by Coordinates
+GET {{API_HostAddress}}/api/v1/weather/forecast/hourly?latitude=-32.5269&longitude=115.7221&hours=24&units=metric
+Accept: application/json
+
+###
+
+### Get Daily Forecast by Coordinates
+GET {{API_HostAddress}}/api/v1/weather/forecast/daily?latitude=-32.5269&longitude=115.7221&days=7&units=metric
+Accept: application/json
+
+###
+
+### Get Weather Bundle by Coordinates (Current + Forecasts)
+GET {{API_HostAddress}}/api/v1/weather/bundle?latitude=-32.5269&longitude=115.7221&units=metric
+Accept: application/json
+
+###
+
+### Get Weather Bundle by Location ID
+GET {{API_HostAddress}}/api/v1/weather/bundle/1
+Accept: application/json
+
+###
+
+# Test with different coordinates (New York)
+### Get Current Weather - New York
+GET {{API_HostAddress}}/api/v1/weather/current?latitude=40.7128&longitude=-74.0060&units=metric
+Accept: application/json
+
+###
+
+### Get Weather Bundle - New York
+GET {{API_HostAddress}}/api/v1/weather/bundle?latitude=40.7128&longitude=-74.0060&units=imperial
+Accept: application/json
+
+###
+

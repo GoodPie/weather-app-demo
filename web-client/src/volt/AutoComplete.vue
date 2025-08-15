@@ -1,5 +1,6 @@
 <template>
     <AutoComplete
+        v-bind="mergedProps"
         unstyled
         :pt="theme"
         :ptOptions="{
@@ -18,16 +19,20 @@
 <script setup lang="ts">
 import ChevronDownIcon from '@primevue/icons/chevrondown';
 import AutoComplete, { type AutoCompletePassThroughOptions, type AutoCompleteProps } from 'primevue/autocomplete';
-import { ref } from 'vue';
+import { ref, computed, useAttrs } from 'vue';
 import { ptViewMerge } from './utils';
 
-interface Props extends /* @vue-ignore */ AutoCompleteProps {}
-defineProps<Props>();
+defineOptions({ inheritAttrs: false });
+
+type Props = AutoCompleteProps
+const props = defineProps<Props>()
+const attrs = useAttrs()
+const mergedProps = computed(() => ({ ...props, ...attrs }))
 
 const theme = ref<AutoCompletePassThroughOptions>({
     root: `inline-flex p-fluid:flex`,
     pcInputText: {
-        root: `appearance-none rounded-md outline-hidden 
+        root: `appearance-none rounded-md outline-hidden
             bg-surface-0 dark:bg-surface-950
             p-filled:bg-surface-50 dark:p-filled:bg-surface-800
             text-surface-700 dark:text-surface-0

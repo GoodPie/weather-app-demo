@@ -39,14 +39,25 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
             .ToListAsync();
     }
 
-    public Task<ICollection<Location>> FindLocationByGeolocationAsync(double latitude, double longitude)
+    public async Task<ICollection<Location>> FindLocationByGeolocationAsync(double latitude, double longitude)
     {
-        throw new NotImplementedException();
+        // Find locations within a reasonable distance (about 0.1 degrees ~ 11km)
+        const double tolerance = 0.1;
+        
+        return await context.Locations
+            .Where(location => 
+                Math.Abs(location.Latitude - latitude) <= tolerance &&
+                Math.Abs(location.Longitude - longitude) <= tolerance)
+            .OrderBy(location => 
+                Math.Abs(location.Latitude - latitude) + Math.Abs(location.Longitude - longitude)) // Simple distance approximation
+            .Take(10)
+            .ToListAsync();
     }
 
-    public Task<Location> FindLocationByIdAsync(int id)
+    public async Task<Location> FindLocationByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var location = await context.Locations.FindAsync(id);
+        return location ?? throw new ArgumentException($"Location with ID {id} not found", nameof(id));
     }
 
 

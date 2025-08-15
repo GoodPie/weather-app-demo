@@ -96,6 +96,96 @@ namespace DAL.Migrations
 
                     b.ToTable("Locations");
                 });
+
+            modelBuilder.Entity("DAL.Models.WeatherData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApiResponse")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Condition")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConditionType")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double?>("FeelsLikeTemperature")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateTime>("FetchedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double?>("Humidity")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("IconUri")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool?>("IsDaytime")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Summary")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<double?>("Temperature")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("TemperatureUnit")
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double?>("UvIndex")
+                        .HasColumnType("REAL");
+
+                    b.Property<double?>("WindDirection")
+                        .HasColumnType("REAL");
+
+                    b.Property<double?>("WindSpeed")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("WindSpeedUnit")
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FetchedAt");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("WeatherData");
+                });
+
+            modelBuilder.Entity("DAL.Models.WeatherData", b =>
+                {
+                    b.HasOne("DAL.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+                });
 #pragma warning restore 612, 618
         }
     }

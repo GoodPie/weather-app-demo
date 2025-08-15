@@ -2,6 +2,7 @@ using System.Threading.RateLimiting;
 using BLL.Services;
 using BLL.Services.Contracts;
 using BLL.Services.Google.Geocoding;
+using BLL.Services.Google.Weather;
 using DAL;
 using DAL.Repository;
 using DAL.Repository.Contracts;
@@ -49,10 +50,12 @@ builder.Services.AddDbContext<WeatherDbContext>(options =>
 // Inject repository layer
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IGeoCodeSearchRepository, GeoCodeSearchRepository>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 // Inject service layer
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IGeocodingService, GoogleGeocodingService>();
+builder.Services.AddScoped<IWeatherService, GoogleWeatherService>();
 
 // Add HttpClient and Geocoding service
 builder.Services.AddHttpClient();
