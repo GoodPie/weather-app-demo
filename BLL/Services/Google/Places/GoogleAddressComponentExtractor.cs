@@ -1,14 +1,13 @@
 using DAL.Dtos.Google;
 using DAL.Dtos.Location;
 
-namespace BLL.Services.Google;
+namespace BLL.Services.Google.Places;
 
 public class GoogleAddressComponentExtractor(GoogleGeocodingResultDto result)
 {
     private const string CountryType = "country";
     private const string LocalityType = "locality";
     private const string AdminLevel1Type = "administrative_area_level_1";
-    private const string AdminLevel2Type = "administrative_area_level_2";
 
     public GeocodingLocationDto ExtractLocationData()
     {

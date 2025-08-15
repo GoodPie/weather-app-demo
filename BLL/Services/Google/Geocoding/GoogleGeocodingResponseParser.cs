@@ -1,20 +1,15 @@
 using System.Text.Json;
 using DAL.Dtos.Google;
 
-namespace BLL.Services.Contracts;
+namespace BLL.Services.Google.Geocoding;
 
 public class GoogleGeocodingResponseParser
 {
-    private readonly JsonSerializerOptions _jsonOptions;
-
-    public GoogleGeocodingResponseParser()
+    private readonly JsonSerializerOptions _jsonOptions = new()
     {
-        _jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true,
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-        };
-    }
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+    };
 
     public GoogleGeocodingDto Parse(string json)
     {

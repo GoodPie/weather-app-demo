@@ -1,10 +1,11 @@
 using System.Web;
 using Microsoft.Extensions.Logging;
 
-namespace BLL.Services;
+namespace BLL.Services.Google;
 
 public class GoogleApiClient
 {
+    // TODO: Move this into appsettings.json
     private const string BaseUrl = "https://maps.googleapis.com/maps/api/geocode/json";
     private readonly string _apiKey;
     private readonly HttpClient _httpClient;

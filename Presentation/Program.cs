@@ -1,7 +1,7 @@
 using System.Threading.RateLimiting;
 using BLL.Services;
 using BLL.Services.Contracts;
-using BLL.Services.Google;
+using BLL.Services.Google.Geocoding;
 using DAL;
 using DAL.Repository;
 using DAL.Repository.Contracts;

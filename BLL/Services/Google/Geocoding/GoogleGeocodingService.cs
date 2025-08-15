@@ -4,7 +4,7 @@ using DAL.Repository.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace BLL.Services.Google;
+namespace BLL.Services.Google.Geocoding;
 
 public class GoogleGeocodingService : IGeocodingService
 {

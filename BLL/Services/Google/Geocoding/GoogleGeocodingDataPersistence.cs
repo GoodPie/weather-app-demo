@@ -1,10 +1,11 @@
+using BLL.Services.Google.Places;
 using DAL.Dtos.Google;
 using DAL.Dtos.Location;
 using DAL.Models;
 using DAL.Repository.Contracts;
 using Microsoft.Extensions.Logging;
 
-namespace BLL.Services.Google;
+namespace BLL.Services.Google.Geocoding;
 
 public class GoogleGeocodingDataPersistence(
     ILocationRepository locationRepository,
