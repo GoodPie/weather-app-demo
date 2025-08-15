@@ -9,11 +9,14 @@ public class GoogleAddressComponentExtractor(GoogleGeocodingResultDto result)
     private const string LocalityType = "locality";
     private const string AdminLevel1Type = "administrative_area_level_1";
 
-    public GeocodingLocationDto ExtractLocationData(string fallbackCityName)
+    public GeocodingLocationDto ExtractLocationData()
     {
+        var cityName = ExtractCityName();
+        if (string.IsNullOrEmpty(cityName)) throw new InvalidOperationException("City name cannot be empty");
+
         return new GeocodingLocationDto
         {
-            City = ExtractCityName(fallbackCityName),
+            City = ExtractCityName(),
             Latitude = ExtractLatitude(),
             Longitude = ExtractLongitude(),
             ProvinceName = ExtractProvinceName(),
@@ -34,10 +37,10 @@ public class GoogleAddressComponentExtractor(GoogleGeocodingResultDto result)
         return countryComponent?.ShortName ?? string.Empty;
     }
 
-    private string ExtractCityName(string fallbackCityName)
+    private string ExtractCityName()
     {
         var localityComponent = FindAddressComponent(LocalityType);
-        return localityComponent?.LongName ?? fallbackCityName;
+        return localityComponent?.LongName ?? string.Empty;
     }
 
     private string ExtractProvinceName()

@@ -26,7 +26,7 @@ public class GoogleGeocodingDataPersistence(
     {
         if (response.Results.Count > 0)
         {
-            var geocodingLocations = ConvertToLocationData(response.Results, query);
+            var geocodingLocations = ConvertToLocationData(response.Results);
             await SaveLocationsAsync(geocodingLocations, query);
         }
 
@@ -41,10 +41,23 @@ public class GoogleGeocodingDataPersistence(
         logger.LogInformation("Saved {Count} geocoding results for query: {Query}", geocodingLocations.Count, query);
     }
 
-    private List<GeocodingLocationDto> ConvertToLocationData(IList<GoogleGeocodingResultDto> results, string query)
+    private List<GeocodingLocationDto> ConvertToLocationData(List<GoogleGeocodingResultDto> results)
     {
-        return results
-            .Select(result => new GoogleAddressComponentExtractor(result).ExtractLocationData(query))
-            .ToList();
+        var locations = new List<GeocodingLocationDto>();
+        if (results.Count == 0) return locations;
+
+        foreach (var result in results)
+            try
+            {
+                var locationData = new GoogleAddressComponentExtractor(result).ExtractLocationData();
+                locations.Add(locationData);
+            }
+            catch (InvalidOperationException ex)
+            {
+                logger.LogWarning("No location data extracted for result: {warning}", ex.Message);
+            }
+
+
+        return locations;
     }
 }
