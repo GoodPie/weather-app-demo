@@ -1,10 +1,10 @@
-using BLL.Services;
 using BLL.Services.Contracts;
-using BLL.Services.Google;
 using DAL.Models;
 using DAL.Repository.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
+namespace BLL.Services.Google;
 
 public class GoogleGeocodingService : IGeocodingService
 {
