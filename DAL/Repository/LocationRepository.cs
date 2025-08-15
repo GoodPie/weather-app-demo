@@ -1,3 +1,4 @@
+using DAL.Dtos.Location;
 using DAL.Models;
 using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -49,24 +50,13 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
     }
 
 
-    public async Task<List<Location>> SaveGeocodingResultsAsync(
-        List<(string city, double lat, double lng, string formattedAddress, string country, string? iso2)>
-            geocodingResults)
+    public async Task<List<Location>> SaveGeocodingResultsAsync(List<GeocodingLocationDto> geocodingResults)
     {
         var savedLocations = new List<Location>();
 
-        foreach (var (city, lat, lng, _, country, iso2) in geocodingResults)
+        foreach (var geocodeResult in geocodingResults)
         {
-            // Create new location
-            var newLocation = new Location
-            {
-                City = city,
-                Latitude = lat,
-                Longitude = lng,
-                Country = country,
-                Iso2 = iso2
-            };
-
+            var newLocation = GeocodingLocationDto.MapToModel(geocodeResult);
             context.Locations.Add(newLocation);
             savedLocations.Add(newLocation);
         }

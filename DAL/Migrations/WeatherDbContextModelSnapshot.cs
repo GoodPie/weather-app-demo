@@ -78,6 +78,11 @@ namespace DAL.Migrations
                         .HasPrecision(10, 5)
                         .HasColumnType("REAL");
 
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
