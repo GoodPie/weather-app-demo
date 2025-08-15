@@ -54,7 +54,7 @@ public class GoogleGeocodingDataPersistence(
             }
             catch (InvalidOperationException ex)
             {
-                logger.LogWarning("No location data extracted for result: {warning}", ex.Message);
+                logger.LogWarning(ex, "No location data extracted for result");
             }
 
 
