@@ -3,7 +3,7 @@ import type { UnitSystem, WeatherBundle, WeatherResponse } from '@/types/weather
 import CurrentWeatherCard from './CurrentWeatherCard.vue'
 
 interface Props {
-  response?: WeatherResponse<WeatherBundle>
+  response?: WeatherResponse<WeatherBundle> | null
   unitSystem: UnitSystem
   title?: string
   loading?: boolean

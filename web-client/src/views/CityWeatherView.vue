@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useTimeOfDayTheme } from '@/composables/useTimeOfDayTheme'
 import { useUnits } from '@/composables/useUnits'
 import { getWeatherBundleById } from '@/services/api'
 import type { WeatherBundle, WeatherResponse } from '@/types/weather'
 import WeatherBundleView from '@/components/weather/WeatherBundleView.vue'
+import ToggleSwitch from '@/volt/ToggleSwitch.vue'
 
 // Apply base theming (will later derive from city local time)
 useTimeOfDayTheme()
@@ -13,7 +14,7 @@ useTimeOfDayTheme()
 const route = useRoute()
 const id = route.params.id as string
 
-const { unitSystem, toggleUnitSystem } = useUnits()
+const { unitSystem, setUnitSystem } = useUnits()
 const loading = ref<boolean>(true)
 const error = ref<string | null>(null)
 const response = ref<WeatherResponse<WeatherBundle> | null>(null)
@@ -32,6 +33,13 @@ async function load() {
 }
 
 onMounted(load)
+
+const isMetric = computed({
+  get: () => unitSystem.value === 'imperial',
+  set: (val: boolean) => {
+    setUnitSystem(val ? 'imperial' : 'metric')
+  }
+})
 </script>
 
 <template>
@@ -41,10 +49,11 @@ onMounted(load)
         <div>
           <h1 class="text-3xl md:text-4xl font-bold">{{ response?.location?.label ?? ('#' + id) }}</h1>
         </div>
-        <button
-          class="px-3 py-2 rounded-xl border border-sunset-500/50 hover:bg-white/5"
-          @click="toggleUnitSystem"
-        >Toggle Units ({{ unitSystem }})</button>
+        <div class="flex items-center gap-2">
+          <span :class="!isMetric ? 'font-bold text-primary' : 'text-gray-400'">°C</span>
+          <ToggleSwitch v-model="isMetric" :aria-label="!isMetric ? 'Switch to Fahrenheit' : 'Switch to Celsius'" />
+          <span :class="isMetric ? 'font-bold text-primary' : 'text-gray-400'">°F</span>
+        </div>
       </div>
 
       <div v-if="error" class="p-3 rounded-lg border border-red-500/70 bg-red-500/10 text-red-200">

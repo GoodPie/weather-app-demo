@@ -37,7 +37,7 @@ const windDisplay = computed(() => {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-app-surface p-4 shadow-md border border-sunset-500/20">
+  <div class="rounded-2xl p-4 shadow-md border bg-surface-500 border-b-surface-300">
     <h2 class="text-xl font-semibold mb-2">{{ title }}</h2>
 
     <div v-if="loading" class="text-app-text/70" data-testid="cw-loading">Loading...</div>

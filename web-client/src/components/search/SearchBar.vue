@@ -99,7 +99,7 @@ defineExpose({
         placeholder="Enter city name..."
         class="w-full"
         inputClass="w-full pr-12 px-6 py-4 text-lg bg-app-surface border-2 border-transparent rounded-2xl shadow-lg font-body transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-sunset-500/20 focus:border-sunset-500 placeholder:text-app-text"
-        panelClass="mt-1 bg-app-surface border border-sunset-500/90 rounded-lg shadow-lg p-4"
+        panelClass="mt-1 bg-surface-900 border border-sunset-500/90 rounded-lg shadow-lg p-4"
         :aria-label="'Search for city weather information'"
         :delay="delay"
         :minLength="minQueryLength"
