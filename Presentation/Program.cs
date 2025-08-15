@@ -49,6 +49,7 @@ builder.Services.AddDbContext<WeatherDbContext>(options =>
 // Inject repository layer
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IGeoCodeSearchRepository, GeoCodeSearchRepository>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 // Inject service layer
 builder.Services.AddScoped<ILocationService, LocationService>();
