@@ -56,9 +56,17 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
 
         foreach (var geocodeResult in geocodingResults)
         {
-            var newLocation = GeocodingLocationDto.MapToModel(geocodeResult);
-            context.Locations.Add(newLocation);
-            savedLocations.Add(newLocation);
+            var newLocations = geocodingResults.Select(GeocodingLocationDto.MapToModel).ToList();
+
+
+            // Check if already exists (in case of race conditions)
+            // Messy but just to get the project done
+            if (await context.Locations.AnyAsync(l =>
+                    l.City == geocodeResult.City && l.Country == geocodeResult.Country))
+                continue;
+
+            context.Locations.AddRange(newLocations);
+            savedLocations.AddRange(newLocations);
         }
 
         await context.SaveChangesAsync();

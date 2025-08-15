@@ -24,8 +24,11 @@ public class GoogleGeocodingService : IGeocodingService
 
         var apiKey = configuration["GoogleMaps:ApiKey"]
                      ?? throw new InvalidOperationException("Google Maps API key not found in configuration");
+        
+        var baseUrl = configuration["GoogleMaps:BaseUrl"]
+                      ?? throw new InvalidOperationException("Google Maps Base URL not found in configuration");
 
-        _apiClient = new GoogleApiClient(httpClient, apiKey, logger);
+        _apiClient = new GoogleApiClient(httpClient, apiKey, baseUrl, logger);
         _responseParser = new GoogleGeocodingResponseParser();
         _dataPersistence = new GoogleGeocodingDataPersistence(
             locationRepository,

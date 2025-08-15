@@ -59,7 +59,6 @@
 }
 
 
-
 /* Custom Variants for our theme */
 @variant dark (&:where(.dark, .dark *));
 
@@ -67,27 +66,63 @@
 @layer base {
   /* Light mode (default) */
   :root {
-    --app-bg: theme(color.white);
-    --app-surface: theme(color.gray.50);
+    --app-bg: theme(--color-white);
+    --app-surface: theme(--color-gray-50);
     --app-accent: var(--color-sunset-500);
-    --app-text: theme(color.gray.900);
-    --app-text-muted: theme(color.gray.600);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
   }
 
   /* Dark mode variant */
   .dark {
-    --app-bg: theme(color.gray.900);
-    --app-surface: theme(color.gray.800);
+    --app-bg: theme(--color-gray-900);
+    --app-surface: theme(--color-gray-800);
     --app-accent: var(--color-sunset-400);
-    --app-text: theme(color.gray.50);
-    --app-text-muted: theme(color.gray.400);
+    --app-text: theme(--color-gray-50);
+    --app-text-muted: theme(--color-gray-400);
+  }
+
+  /* Time-of-day theme variants (apply these on the html element) */
+  .time-midnight {
+    --app-bg: theme(--color-slate-950);
+    --app-surface: theme(--color-slate-900);
+    --app-text: theme(--color-gray-100);
+    --app-text-muted: theme(--color-gray-400);
+  }
+
+  .time-night {
+    --app-bg: theme(--color-slate-900);
+    --app-surface: theme(--color-slate-800);
+    --app-text: theme(--color-gray-100);
+    --app-text-muted: theme(--color-gray-400);
+  }
+
+  .time-dusk {
+    --app-bg: theme(--color-orange-200);
+    --app-surface: theme(--color-orange-50);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
+  }
+
+  .time-midday {
+    --app-bg: theme(--color-sky-50);
+    --app-surface: theme(--color-gray-50);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
+  }
+
+  .time-dawn {
+    --app-bg: theme(--color-sky-100);
+    --app-surface: theme(--color-sky-50);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
   }
 
   /* Apply to html for smooth transitions */
   html {
     @apply transition-colors duration-300;
-    background-color: rgb(var(--app-bg));
-    color: rgb(var(--app-text));
+    background-color: var(--app-bg);
+    color: var(--app-text);
   }
 }
 
@@ -106,18 +141,18 @@
   --p-primary-900: var(--color-sunset-900);
 
   /* Surface Palette */
-  --p-surface-0: theme(color.white);
-  --p-surface-50: theme(color.gray.50);
-  --p-surface-100: theme(color.gray.100);
-  --p-surface-200: theme(color.gray.200);
-  --p-surface-300: theme(color.gray.300);
-  --p-surface-400: theme(color.gray.400);
-  --p-surface-500: theme(color.gray.500);
-  --p-surface-600: theme(color.gray.600);
-  --p-surface-700: theme(color.gray.700);
-  --p-surface-800: theme(color.gray.800);
-  --p-surface-900: theme(color.gray.900);
-  --p-surface-950: theme(color.gray.950);
+  --p-surface-0: theme(--color-white);
+  --p-surface-50: theme(--color-gray-50);
+  --p-surface-100: theme(--color-gray-100);
+  --p-surface-200: theme(--color-gray-200);
+  --p-surface-300: theme(--color-gray-300);
+  --p-surface-400: theme(--color-gray-400);
+  --p-surface-500: theme(--color-gray-500);
+  --p-surface-600: theme(--color-gray-600);
+  --p-surface-700: theme(--color-gray-700);
+  --p-surface-800: theme(--color-gray-800);
+  --p-surface-900: theme(--color-gray-900);
+  --p-surface-950: theme(--color-gray-950);
 
   /* Light Mode Variables */
   --p-primary-color: var(--p-primary-500);

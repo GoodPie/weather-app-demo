@@ -1,25 +1,13 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
 import SearchBar from '@/components/search/SearchBar.vue'
-const isDark = ref(false)
+import { useTimeOfDayTheme } from '@/composables/useTimeOfDayTheme'
 
-const themeClasses = computed(() => ({
-  background: isDark.value
-    ? 'dark bg-bg-primary text-primary]'
-    : 'light bg-primary text-text-primary',
-}))
-
-function updateTheme(darkMode: boolean) {
-  isDark.value = darkMode
-  document.documentElement.className = darkMode ? 'dark' : 'light'
-}
-
-// Initialize theme on mount
-updateTheme(window.matchMedia('(prefers-color-scheme: dark)').matches)
+// Initialize time-of-day and dark mode theming for the search page
+useTimeOfDayTheme()
 </script>
 
 <template>
-  <div class="min-h-screen transition-colors duration-300" :class="themeClasses.background">
+  <div class="min-h-screen transition-colors duration-300">
     <!-- Main Container -->
     <main class="container mx-auto px-4 py-8">
       <div class="flex flex-col items-center justify-center min-h-[80vh] md:min-h-screen">
