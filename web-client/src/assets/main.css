@@ -1,35 +1,99 @@
-@import './base.css';
+@import "tailwindcss";
+@import "tailwindcss-primeui";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+/* Chango font setup */
+@import url('https://fonts.googleapis.com/css2?family=Chango&family=Inter:wght@400;500;600&display=swap');
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  --font-groovy: 'Chango', cursive;
+  --font-body: 'Inter', sans-serif;
+
+  /* Custom colors for our weather app */
+  --color-bg-primary-light: #ffffff;
+  --color-bg-primary-dark: #1a202c;
+  --color-bg-surface-light: #f8f9fa;
+  --color-bg-surface-dark: #2d3748;
+  --color-accent-light: #e53e3e;
+  --color-accent-dark: #f56565;
+  --color-text-primary-light: #1a202c;
+  --color-text-primary-dark: #f7fafc;
+  --color-text-secondary-light: #4a5568;
+  --color-text-secondary-dark: #cbd5e0;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+/* PrimeUI CSS Variables (Required for Volt) */
+:root {
+  /* Primary Palette */
+  --p-primary-50: #fef2f2;
+  --p-primary-100: #fee2e2;
+  --p-primary-200: #fecaca;
+  --p-primary-300: #fca5a5;
+  --p-primary-400: #f87171;
+  --p-primary-500: #ef4444;
+  --p-primary-600: #dc2626;
+  --p-primary-700: #b91c1c;
+  --p-primary-800: #991b1b;
+  --p-primary-900: #7f1d1d;
+  --p-primary-950: #450a0a;
+
+  /* Surface Palette */
+  --p-surface-0: #ffffff;
+  --p-surface-50: #fafafa;
+  --p-surface-100: #f4f4f5;
+  --p-surface-200: #e4e4e7;
+  --p-surface-300: #d4d4d8;
+  --p-surface-400: #a1a1aa;
+  --p-surface-500: #71717a;
+  --p-surface-600: #52525b;
+  --p-surface-700: #3f3f46;
+  --p-surface-800: #27272a;
+  --p-surface-900: #18181b;
+  --p-surface-950: #09090b;
+
+  /* Light Mode Variables */
+  --p-primary-color: var(--p-primary-500);
+  --p-primary-contrast-color: var(--p-surface-0);
+  --p-primary-hover-color: var(--p-primary-600);
+  --p-primary-active-color: var(--p-primary-700);
+  --p-content-border-color: var(--p-surface-200);
+  --p-content-hover-background: var(--p-surface-100);
+  --p-content-hover-color: var(--p-surface-800);
+  --p-text-color: var(--p-surface-700);
+  --p-text-hover-color: var(--p-surface-800);
+  --p-text-muted-color: var(--p-surface-500);
+  --p-content-border-radius: 6px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --p-primary-color: var(--p-primary-400);
+    --p-primary-contrast-color: var(--p-surface-900);
+    --p-primary-hover-color: var(--p-primary-300);
+    --p-primary-active-color: var(--p-primary-200);
+    --p-content-border-color: var(--p-surface-700);
+    --p-content-hover-background: var(--p-surface-800);
+    --p-content-hover-color: var(--p-surface-0);
+    --p-text-color: var(--p-surface-0);
+    --p-text-hover-color: var(--p-surface-0);
+    --p-text-muted-color: var(--p-surface-400);
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+/* Theme Toggle Classes */
+.light {
+  --bg-primary: var(--color-bg-primary-light);
+  --bg-surface: var(--color-bg-surface-light);
+  --accent: var(--color-accent-light);
+  --text-primary: var(--color-text-primary-light);
+  --text-secondary: var(--color-text-secondary-light);
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.dark {
+  --bg-primary: var(--color-bg-primary-dark);
+  --bg-surface: var(--color-bg-surface-dark);
+  --accent: var(--color-accent-dark);
+  --text-primary: var(--color-text-primary-dark);
+  --text-secondary: var(--color-text-secondary-dark);
 }
