@@ -14,6 +14,8 @@ public class Location : TimeStampedEntity
     // Basic searchable data
     [Required] [MaxLength(200)] public required string City { get; set; }
 
+    [Required] [MaxLength(200)] public required string Province { get; set; }
+
     [Required] [MaxLength(100)] public required string Country { get; set; }
 
     // Geolocation data

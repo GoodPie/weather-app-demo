@@ -1,3 +1,4 @@
+using DAL.Dtos.Location;
 using DAL.Models;
 
 namespace DAL.Repository.Contracts;
@@ -42,6 +43,5 @@ public interface ILocationRepository
     /// <param name="geocodingResults"></param>
     /// <returns>List of saved locations</returns>
     Task<List<Location>> SaveGeocodingResultsAsync(
-        List<(string city, double lat, double lng, string formattedAddress, string country, string? iso2)>
-            geocodingResults);
+        List<GeocodingLocationDto> geocodingResults);
 }

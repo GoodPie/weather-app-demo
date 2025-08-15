@@ -1,3 +1,4 @@
+using DAL.Dtos.Location;
 using DAL.Models;
 using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -49,26 +50,23 @@ public class LocationRepository(WeatherDbContext context) : ILocationRepository
     }
 
 
-    public async Task<List<Location>> SaveGeocodingResultsAsync(
-        List<(string city, double lat, double lng, string formattedAddress, string country, string? iso2)>
-            geocodingResults)
+    public async Task<List<Location>> SaveGeocodingResultsAsync(List<GeocodingLocationDto> geocodingResults)
     {
         var savedLocations = new List<Location>();
 
-        foreach (var (city, lat, lng, _, country, iso2) in geocodingResults)
+        foreach (var geocodeResult in geocodingResults)
         {
-            // Create new location
-            var newLocation = new Location
-            {
-                City = city,
-                Latitude = lat,
-                Longitude = lng,
-                Country = country,
-                Iso2 = iso2
-            };
+            var newLocations = geocodingResults.Select(GeocodingLocationDto.MapToModel).ToList();
 
-            context.Locations.Add(newLocation);
-            savedLocations.Add(newLocation);
+
+            // Check if already exists (in case of race conditions)
+            // Messy but just to get the project done
+            if (await context.Locations.AnyAsync(l =>
+                    l.City == geocodeResult.City && l.Country == geocodeResult.Country))
+                continue;
+
+            context.Locations.AddRange(newLocations);
+            savedLocations.AddRange(newLocations);
         }
 
         await context.SaveChangesAsync();

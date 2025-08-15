@@ -1,37 +1,160 @@
+/* Chango font setup */
+@import url('https://fonts.googleapis.com/css2?family=Chango&family=Inter:wght@400;500;600&display=swap');
+
 @import "tailwindcss";
 @import "tailwindcss-primeui";
 
+/* Tailwind v4 Theme Configuration */
+@theme {
+  --font-groovy: 'Chango', cursive;
+  --font-body: 'Inter', sans-serif;
 
-/* Primary and Surface Palettes */
-:root {
-  --p-primary-50: #ecfdf5;
-  --p-primary-100: #d1fae5;
-  --p-primary-200: #a7f3d0;
-  --p-primary-300: #6ee7b7;
-  --p-primary-400: #34d399;
-  --p-primary-500: #10b981;
-  --p-primary-600: #059669;
-  --p-primary-700: #047857;
-  --p-primary-800: #065f46;
-  --p-primary-900: #064e3b;
-  --p-primary-950: #022c22;
-  --p-surface-0: #ffffff;
-  --p-surface-50: #fafafa;
-  --p-surface-100: #f4f4f5;
-  --p-surface-200: #e4e4e7;
-  --p-surface-300: #d4d4d8;
-  --p-surface-400: #a1a1aa;
-  --p-surface-500: #71717a;
-  --p-surface-600: #52525b;
-  --p-surface-700: #3f3f46;
-  --p-surface-800: #27272a;
-  --p-surface-900: #18181b;
-  --p-surface-950: #09090b;
-  --p-content-border-radius: 6px;
+  /* Custom color palette for weather app */
+  --color-sunset-50: #fef7ed;
+  --color-sunset-100: #fef0d9;
+  --color-sunset-200: #fdd5b3;
+  --color-sunset-300: #fb8c3c;
+  --color-sunset-400: #f97316;
+  --color-sunset-500: #ea580c;
+  --color-sunset-600: #dc2626;
+  --color-sunset-700: #b91c1c;
+  --color-sunset-800: #991b1b;
+  --color-sunset-900: #7f1d1d;
+
+  --color-sky-50: #f0f9ff;
+  --color-sky-100: #e0f2fe;
+  --color-sky-200: #bae6fd;
+  --color-sky-300: #7dd3fc;
+  --color-sky-400: #38bdf8;
+  --color-sky-500: #0ea5e9;
+  --color-sky-600: #0284c7;
+  --color-sky-700: #0369a1;
+  --color-sky-800: #075985;
+  --color-sky-900: #0c4a6e;
+
+
+  /* Night Time Colours - Purple Tinge */
+  --color-night-50: #1e1e2e;
+  --color-night-100: #27273a;
+  --color-night-200: #3a3a52;
+  --color-night-300: #575773;
+  --color-night-400: #797991;
+  --color-night-500: #9292a8;
+  --color-night-600: #a8a8c0;
+  --color-night-700: #c0c0d8;
+  --color-night-800: #d8d8e8;
+  --color-night-900: #e8e8f0;
+
+  /* Storm Colours */
+  --color-storm-50: #f7fafc;
+  --color-storm-100: #edf2f7;
+  --color-storm-200: #e2e8f0;
+  --color-storm-300: #cbd5e0;
+  --color-storm-400: #94a3b8;
+  --color-storm-500: #64748b;
+  --color-storm-600: #475569;
+  --color-storm-700: #334155;
+  --color-storm-800: #1e293b;
+  --color-storm-900: #0f172a;
 }
 
-/* Light */
+
+/* Custom Variants for our theme */
+@variant dark (&:where(.dark, .dark *));
+
+/* Base layer for global styles */
+@layer base {
+  /* Light mode (default) */
+  :root {
+    --app-bg: theme(--color-white);
+    --app-surface: theme(--color-gray-50);
+    --app-accent: var(--color-sunset-500);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
+  }
+
+  /* Dark mode variant */
+  .dark {
+    --app-bg: theme(--color-gray-900);
+    --app-surface: theme(--color-gray-800);
+    --app-accent: var(--color-sunset-400);
+    --app-text: theme(--color-gray-50);
+    --app-text-muted: theme(--color-gray-400);
+  }
+
+  /* Time-of-day theme variants (apply these on the html element) */
+  .time-midnight {
+    --app-bg: theme(--color-slate-950);
+    --app-surface: theme(--color-slate-900);
+    --app-text: theme(--color-gray-100);
+    --app-text-muted: theme(--color-gray-400);
+  }
+
+  .time-night {
+    --app-bg: theme(--color-slate-900);
+    --app-surface: theme(--color-slate-800);
+    --app-text: theme(--color-gray-100);
+    --app-text-muted: theme(--color-gray-400);
+  }
+
+  .time-dusk {
+    --app-bg: theme(--color-orange-200);
+    --app-surface: theme(--color-orange-50);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
+  }
+
+  .time-midday {
+    --app-bg: theme(--color-sky-50);
+    --app-surface: theme(--color-gray-50);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
+  }
+
+  .time-dawn {
+    --app-bg: theme(--color-sky-100);
+    --app-surface: theme(--color-sky-50);
+    --app-text: theme(--color-gray-900);
+    --app-text-muted: theme(--color-gray-600);
+  }
+
+  /* Apply to html for smooth transitions */
+  html {
+    @apply transition-colors duration-300;
+    background-color: var(--app-bg);
+    color: var(--app-text);
+  }
+}
+
+/* PrimeUI CSS Variables (Required for Volt) */
 :root {
+  /* Primary Palette - Using our sunset theme */
+  --p-primary-50: var(--color-sunset-50);
+  --p-primary-100: var(--color-sunset-100);
+  --p-primary-200: var(--color-sunset-200);
+  --p-primary-300: var(--color-sunset-300);
+  --p-primary-400: var(--color-sunset-400);
+  --p-primary-500: var(--color-sunset-500);
+  --p-primary-600: var(--color-sunset-600);
+  --p-primary-700: var(--color-sunset-700);
+  --p-primary-800: var(--color-sunset-800);
+  --p-primary-900: var(--color-sunset-900);
+
+  /* Surface Palette */
+  --p-surface-0: theme(--color-white);
+  --p-surface-50: theme(--color-gray-50);
+  --p-surface-100: theme(--color-gray-100);
+  --p-surface-200: theme(--color-gray-200);
+  --p-surface-300: theme(--color-gray-300);
+  --p-surface-400: theme(--color-gray-400);
+  --p-surface-500: theme(--color-gray-500);
+  --p-surface-600: theme(--color-gray-600);
+  --p-surface-700: theme(--color-gray-700);
+  --p-surface-800: theme(--color-gray-800);
+  --p-surface-900: theme(--color-gray-900);
+  --p-surface-950: theme(--color-gray-950);
+
+  /* Light Mode Variables */
   --p-primary-color: var(--p-primary-500);
   --p-primary-contrast-color: var(--p-surface-0);
   --p-primary-hover-color: var(--p-primary-600);
@@ -39,40 +162,22 @@
   --p-content-border-color: var(--p-surface-200);
   --p-content-hover-background: var(--p-surface-100);
   --p-content-hover-color: var(--p-surface-800);
-  --p-highlight-background: var(--p-primary-50);
-  --p-highlight-color: var(--p-primary-700);
-  --p-highlight-focus-background: var(--p-primary-100);
-  --p-highlight-focus-color: var(--p-primary-800);
   --p-text-color: var(--p-surface-700);
   --p-text-hover-color: var(--p-surface-800);
   --p-text-muted-color: var(--p-surface-500);
-  --p-text-hover-muted-color: var(--p-surface-600);
+  --p-content-border-radius: 6px;
 }
 
-/*
- * Dark Mode
- * Defaults to system, change the dark variant selector to match the CSS variable configuration.
- * For example;
- * @custom-variant dark (&:where(.app-dark, .app-dark *));
- * should match to;
- * :root[class="app-dark"]
-*/
-@media (prefers-color-scheme: dark) {
-  :root {
-    --p-primary-color: var(--p-primary-400);
-    --p-primary-contrast-color: var(--p-surface-900);
-    --p-primary-hover-color: var(--p-primary-300);
-    --p-primary-active-color: var(--p-primary-200);
-    --p-content-border-color: var(--p-surface-700);
-    --p-content-hover-background: var(--p-surface-800);
-    --p-content-hover-color: var(--p-surface-0);
-    --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
-    --p-highlight-color: rgba(255, 255, 255, 0.87);
-    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
-    --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
-    --p-text-color: var(--p-surface-0);
-    --p-text-hover-color: var(--p-surface-0);
-    --p-text-muted-color: var(--p-surface-400);
-    --p-text-hover-muted-color: var(--p-surface-300);
-  }
+/* Dark Mode PrimeUI Variables */
+.dark {
+  --p-primary-color: var(--p-primary-400);
+  --p-primary-contrast-color: var(--p-surface-900);
+  --p-primary-hover-color: var(--p-primary-300);
+  --p-primary-active-color: var(--p-primary-200);
+  --p-content-border-color: var(--p-surface-700);
+  --p-content-hover-background: var(--p-surface-800);
+  --p-content-hover-color: var(--p-surface-0);
+  --p-text-color: var(--p-surface-0);
+  --p-text-hover-color: var(--p-surface-0);
+  --p-text-muted-color: var(--p-surface-400);
 }

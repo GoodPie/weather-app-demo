@@ -10,10 +10,8 @@ namespace DAL.Dtos.Location;
 public class SearchLocationResponseDto : IModelToDto<Models.Location, SearchLocationResponseDto>
 {
     public int Id { get; set; }
-    public string CityName { get; set; } = string.Empty;
-    public string Country { get; set; } = string.Empty;
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public string Label { get; set; }
+
 
     public static SearchLocationResponseDto MapToDto(Models.Location model)
     {
@@ -21,13 +19,15 @@ public class SearchLocationResponseDto : IModelToDto<Models.Location, SearchLoca
         // Rely on model field annotations for validation
         if (model == null) throw new ArgumentNullException(nameof(model), "Model cannot be null");
 
+        // Not a big fan of this but look at later
+        var label = new List<string> { model.City, model.Province, model.Country }
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Aggregate((current, next) => $"{current}, {next}");
+
         return new SearchLocationResponseDto
         {
             Id = model.Id,
-            CityName = model.City,
-            Country = model.Country,
-            Latitude = model.Latitude,
-            Longitude = model.Longitude
+            Label = label
         };
     }
 }
