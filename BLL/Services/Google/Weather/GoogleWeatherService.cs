@@ -3,6 +3,7 @@ using BLL.Services.Weather;
 using DAL.Dtos;
 using DAL.Dtos.Weather;
 using DAL.Models;
+using DAL.Repository.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -19,17 +20,17 @@ public class GoogleWeatherService : IWeatherService
         HttpClient httpClient,
         IConfiguration configuration,
         ILogger<GoogleWeatherService> logger,
-        DAL.Repository.Contracts.IWeatherRepository weatherRepository,
-        DAL.Repository.Contracts.ILocationRepository locationRepository)
+        IWeatherRepository weatherRepository,
+        ILocationRepository locationRepository)
     {
         _logger = logger;
 
-        var apiKey = configuration["GoogleWeather:ApiKey"] 
+        var apiKey = configuration["GoogleWeather:ApiKey"]
                      ?? configuration["GoogleMaps:ApiKey"] // Fallback to same key
                      ?? throw new InvalidOperationException("Google Weather API key not found in configuration");
-        
+
         _weatherBaseUrl = configuration["GoogleWeather:BaseUrl"]
-                         ?? throw new InvalidOperationException("Google Weather Base URL not found in configuration");
+                          ?? throw new InvalidOperationException("Google Weather Base URL not found in configuration");
 
         // Note: GoogleApiClient expects geocoding baseUrl in constructor, we'll pass weather URL to FetchWeatherDataAsync
         var geocodingBaseUrl = configuration["GoogleMaps:BaseUrl"] ?? "";
@@ -40,7 +41,8 @@ public class GoogleWeatherService : IWeatherService
             logger);
     }
 
-    public async Task<ServiceResponse<CurrentWeatherDto>> GetCurrentWeatherByLocationIdAsync(int locationId, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<CurrentWeatherDto>> GetCurrentWeatherByLocationIdAsync(int locationId,
+        CancellationToken cancellationToken = default)
     {
         var response = new ServiceResponse<CurrentWeatherDto>();
 
@@ -67,9 +69,9 @@ public class GoogleWeatherService : IWeatherService
             }
 
             // Fetch fresh weather data from Google Weather API
-            _logger.LogInformation("Fetching fresh weather data for location: {LocationId} ({Latitude}, {Longitude})", 
+            _logger.LogInformation("Fetching fresh weather data for location: {LocationId} ({Latitude}, {Longitude})",
                 locationId, location.Latitude, location.Longitude);
-            
+
             await FetchAndStoreWeatherAsync(locationId, location.Latitude, location.Longitude, cancellationToken);
 
             // Retrieve the newly saved weather data
@@ -96,13 +98,8 @@ public class GoogleWeatherService : IWeatherService
         return response;
     }
 
-    private async Task FetchAndStoreWeatherAsync(int locationId, double latitude, double longitude, CancellationToken cancellationToken)
-    {
-        var json = await _apiClient.FetchWeatherDataAsync(latitude, longitude, _weatherBaseUrl, cancellationToken);
-        await _dataPersistence.SaveWeatherDataAsync(locationId, json, cancellationToken);
-    }
-
-    public async Task<ServiceResponse<List<HourlyForecastDto>>> GetHourlyForecastByLocationIdAsync(int locationId, int hours = 24, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<List<HourlyForecastDto>>> GetHourlyForecastByLocationIdAsync(int locationId,
+        int hours = 24, CancellationToken cancellationToken = default)
     {
         // For now, return empty list as Google Weather API current conditions endpoint doesn't provide hourly forecast
         // This would require a separate forecast endpoint call
@@ -115,7 +112,8 @@ public class GoogleWeatherService : IWeatherService
         return response;
     }
 
-    public async Task<ServiceResponse<List<DailyForecastDto>>> GetDailyForecastByLocationIdAsync(int locationId, int days = 7, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<List<DailyForecastDto>>> GetDailyForecastByLocationIdAsync(int locationId,
+        int days = 7, CancellationToken cancellationToken = default)
     {
         // For now, return empty list as Google Weather API current conditions endpoint doesn't provide daily forecast
         // This would require a separate forecast endpoint call
@@ -128,7 +126,8 @@ public class GoogleWeatherService : IWeatherService
         return response;
     }
 
-    public async Task<ServiceResponse<WeatherBundleDto>> GetWeatherBundleByLocationIdAsync(int locationId, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<WeatherBundleDto>> GetWeatherBundleByLocationIdAsync(int locationId,
+        CancellationToken cancellationToken = default)
     {
         var response = new ServiceResponse<WeatherBundleDto>();
 
@@ -136,14 +135,14 @@ public class GoogleWeatherService : IWeatherService
         {
             // Get current weather
             var currentWeatherResponse = await GetCurrentWeatherByLocationIdAsync(locationId, cancellationToken);
-            
+
             response.Data = new WeatherBundleDto
             {
                 Current = currentWeatherResponse.Success ? currentWeatherResponse.Data : null,
                 Hourly = new List<HourlyForecastDto>(), // TODO: Implement when forecast endpoints added
                 Daily = new List<DailyForecastDto>() // TODO: Implement when forecast endpoints added
             };
-            
+
             response.Success = true;
             response.Message = "Weather bundle retrieved (current only)";
         }
@@ -157,12 +156,22 @@ public class GoogleWeatherService : IWeatherService
         return response;
     }
 
+    private async Task FetchAndStoreWeatherAsync(int locationId, double latitude, double longitude,
+        CancellationToken cancellationToken)
+    {
+        var json = await _apiClient.FetchWeatherDataAsync(latitude, longitude, _weatherBaseUrl, cancellationToken);
+        await _dataPersistence.SaveWeatherDataAsync(locationId, json, cancellationToken);
+    }
+
     private static CurrentWeatherDto MapToCurrentWeatherDto(WeatherData weatherData)
     {
-        var (temperatureCelsius, temperatureFahrenheit) = WeatherUnitConverter.NormalizeTemperature(weatherData.Temperature, weatherData.TemperatureUnit);
-        var (feelsLikeCelsius, feelsLikeFahrenheit) = WeatherUnitConverter.NormalizeTemperature(weatherData.FeelsLikeTemperature, weatherData.TemperatureUnit);
-        var (windKilometersPerHour, windMilesPerHour) = WeatherUnitConverter.NormalizeWindSpeed(weatherData.WindSpeed, weatherData.WindSpeedUnit);
-        
+        var (temperatureCelsius, temperatureFahrenheit) =
+            WeatherUnitConverter.NormalizeTemperature(weatherData.Temperature, weatherData.TemperatureUnit);
+        var (feelsLikeCelsius, feelsLikeFahrenheit) =
+            WeatherUnitConverter.NormalizeTemperature(weatherData.FeelsLikeTemperature, weatherData.TemperatureUnit);
+        var (windKilometersPerHour, windMilesPerHour) =
+            WeatherUnitConverter.NormalizeWindSpeed(weatherData.WindSpeed, weatherData.WindSpeedUnit);
+
         return new CurrentWeatherDto
         {
             AsOf = weatherData.FetchedAt.ToString("O"), // ISO 8601 format
@@ -174,7 +183,9 @@ public class GoogleWeatherService : IWeatherService
             ConditionText = weatherData.Condition,
             WindKph = windKilometersPerHour,
             WindMph = windMilesPerHour,
-            WindDir = weatherData.WindDirection.HasValue ? WeatherUnitConverter.DegreesToCardinalDirection(weatherData.WindDirection.Value) : null,
+            WindDir = weatherData.WindDirection.HasValue
+                ? WeatherUnitConverter.DegreesToCardinalDirection(weatherData.WindDirection.Value)
+                : null,
             Humidity = weatherData.Humidity,
             PressureMb = null, // Not available in Google Weather API current conditions
             UvIndex = weatherData.UvIndex,

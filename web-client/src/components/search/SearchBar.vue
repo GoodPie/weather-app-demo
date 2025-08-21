@@ -69,7 +69,7 @@ defineExpose({
 
 <template>
   <div class="search-container space-y-6">
-    <h1 class="font-groovy text-white text-4xl md:text-5xl lg:text-6xl text-center leading-tight">
+    <h1 class="font-groovy text-(--app-text) text-4xl md:text-5xl lg:text-6xl text-center leading-tight">
       Weather App
     </h1>
 
@@ -99,7 +99,7 @@ defineExpose({
         placeholder="Enter city name..."
         class="w-full"
         inputClass="w-full pr-12 px-6 py-4 text-lg bg-app-surface/50 border-2 bo rounded-2xl shadow-lg font-body transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-sunset-500/20 focus:border-sunset-500 "
-        panelClass="mt-1 bg-surface-900 border border-sunset-500/90 rounded-lg shadow-lg p-4"
+        panelClass="mt-1 bg-(--app-bg) border  border-sunset-500/90 text-(--app-text) rounded-lg shadow-lg p-4"
         :aria-label="'Search for city weather information'"
         :delay="delay"
         :minLength="minQueryLength"

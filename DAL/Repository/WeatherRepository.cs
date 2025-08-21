@@ -9,7 +9,7 @@ public class WeatherRepository(WeatherDbContext context) : IWeatherRepository
     public async Task<WeatherData?> GetCachedWeatherAsync(int locationId, CancellationToken cancellationToken = default)
     {
         var now = DateTime.UtcNow;
-        
+
         return await context.WeatherData
             .Include(w => w.Location)
             .Where(w => w.LocationId == locationId && w.ExpiresAt > now)
@@ -17,23 +17,18 @@ public class WeatherRepository(WeatherDbContext context) : IWeatherRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<WeatherData> SaveWeatherDataAsync(WeatherData weatherData, CancellationToken cancellationToken = default)
+    public async Task<WeatherData> SaveWeatherDataAsync(WeatherData weatherData,
+        CancellationToken cancellationToken = default)
     {
         // Set fetch timestamp if not already set
-        if (weatherData.FetchedAt == default)
-        {
-            weatherData.FetchedAt = DateTime.UtcNow;
-        }
-        
+        if (weatherData.FetchedAt == default) weatherData.FetchedAt = DateTime.UtcNow;
+
         // Set expiration if not already set (default 1 hour)
-        if (weatherData.ExpiresAt == default)
-        {
-            weatherData.ExpiresAt = DateTime.UtcNow.AddHours(1);
-        }
-        
+        if (weatherData.ExpiresAt == default) weatherData.ExpiresAt = DateTime.UtcNow.AddHours(1);
+
         context.WeatherData.Add(weatherData);
         await context.SaveChangesAsync(cancellationToken);
-        
+
         return weatherData;
     }
 
@@ -52,5 +47,4 @@ public class WeatherRepository(WeatherDbContext context) : IWeatherRepository
             .OrderByDescending(w => w.FetchedAt)
             .FirstOrDefaultAsync(cancellationToken);
     }
-
 }

@@ -8,14 +8,16 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-p type-check \"build-only {@}\" -- && npm run clean-presenter && npm run add-to-presenter",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "clean-presenter": "rm -r ../Presentation/wwwroot/*",
+    "add-to-presenter": "cp -r ./dist/* ../Presentation/wwwroot/"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",

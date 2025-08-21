@@ -10,3 +10,4 @@ riderModule.iml
 # DB locks (Sqlite)
 *.db-wal
 *.db-shm
+Presentation/wwwroot/
